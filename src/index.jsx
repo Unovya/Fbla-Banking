@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import Home from "./pages/home.jsx";
-import { HashRouter as Router, Routes, Route} from "react-router-dom";
 import "./index.css";
+import App from "./App.jsx";
 
 const root = createRoot(document.body);
-root.render(<Home />);
+root.render(<App />);
