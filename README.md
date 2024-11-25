@@ -6,8 +6,8 @@
 ### Dependencies (when in dev)
 
 ```
-next.js:
-    https://nextjs.org
+react.js:
+    https://reactjs.org
     
 This Repo
 ```
