@@ -6,10 +6,10 @@
 ### Dependencies (when in dev)
 
 ```
-react.js:
-    https://reactjs.org
-    
-This Repo
+This repo
+
+use:
+    npm install
 ```
 
 ### Use the App
@@ -18,4 +18,8 @@ This Repo
 # development mode
 
 $ npm start
+
+# Or if your on a school pc
+
+$ sudo npm start
 ```
