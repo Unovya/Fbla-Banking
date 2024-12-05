@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import Twline from "../components/line.jsx";
 
 
-export default function Home() {
+export default function Xmple1() {
     return (
         <div className="grid h-screen/2 items-center grid-col-1 text-2xl w-full text-center align justify-center bg-white">
             <div className="grid h-auto pt-10 items-center grid-col-1 text-2xl w-full text-center align justify-center bg-white">
@@ -20,7 +20,6 @@ export default function Home() {
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-white ">Basic example of components</h5>
                 <p id="timeTracker" className="text-lg font-bold tracking-tight text-white">Time update</p>
                 <TimeChecker />
-
             </div>
         </div>
     );

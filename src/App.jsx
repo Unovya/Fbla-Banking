@@ -2,17 +2,19 @@ import React from 'react';
 import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import './index.css';
 // Import all the pages
-import Home from './pages/home.jsx';
-import Pg2 from './pages/pg2.jsx';
-
+import Xmple1 from './pages/xmple1.jsx';
+import Xmple2 from './pages/xmple2.jsx';
+import HomePage from "./pages/homePage.jsx";
+// end page import
 
 const App = () => {
     return (
         <Router>
             <Routes>
                 {/* If going to main window make sure not to do "./home". do "/" */}
-                <Route path="/" element={<Home />} />
-                <Route path="/pg2" element={<Pg2 />} />
+                <Route path="/" element={<HomePage />} />
+                <Route path="/example1" element={<Xmple1 />} />
+                <Route path="/example2" element={<Xmple2 />} />
             </Routes>
         </Router>
     );

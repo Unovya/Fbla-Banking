@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
-export default function Pg2() {
+export default function Xmple2() {
     return (
         <div
             className="grid h-screen items-center grid-col-1 text-2xl w-full text-center align justify-center bg-white">
