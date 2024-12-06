@@ -11,7 +11,7 @@ export default function Xmple1() {
                 <div className="block justify-center text-center p-6 w-80 h-40 items-center bg-black border border-gray-200 rounded-lg shadow hover:bg-darkGray ">
                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">Basic example of page
                         switching</h5>
-                    <Link to="./pg2" className="text-blue-500 hover:underline"> Go to page 2</Link>
+                    <Link to="/example2" className="text-blue-500 hover:underline"> Go to page 2</Link>
                 </div>
             </div>
             <Twline />
