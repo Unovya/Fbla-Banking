@@ -18,7 +18,7 @@ const SideNavbar = () => {
     return (
         //Make the Side Box
         <div className={`${BGColor} h-screen p-5 pt-8 ${open ? "w-52" : "w-20"  } duration-300 w-1/6 left-0 relative`}>
-            <BsArrowLeftShort className={`bg-white text-gray-800 text-3xl rounded-full absolute -right-3 top-9 border border-gray-800 cursor-pointer duration-300 ${open && "rotate-180"}`} onClick={() => setOpen(!open)} />
+            <BsArrowLeftShort className={`bg-white text-gray-800 text-3xl rounded-full absolute -right-3 top-9 border border-gray-800 cursor-pointer hover:bg-gray-300 duration-300 ${open && "rotate-180"}`} onClick={() => setOpen(!open)} />
 
             <div className={"inline-flex"}>
                 <Link to="/">
