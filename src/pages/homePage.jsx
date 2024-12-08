@@ -2,8 +2,7 @@ import React from "react";
 import SideNavbar from "../components/sideNavbar.jsx";
 import { HiOutlinePaperClip } from "react-icons/hi2";
 import {BalWidget} from "../scripts/database-Stuff/DBComponents/balWidget.jsx";
-import {BalTest} from "../scripts/database-Stuff/DBComponents/balTest.jsx";
-import {GrMoney} from "react-icons/gr";
+
 
 
 export default function HomePage() {
