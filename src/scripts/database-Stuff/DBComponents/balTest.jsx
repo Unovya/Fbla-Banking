@@ -13,13 +13,16 @@ export function BalTest({ defaultBal } = { defaultBal: 0 }) {
                 const existingBal = await db.currentBal.toCollection().first();
                 if (existingBal) {
                     setBal(parseFloat(existingBal.balance) || 0); // make balance a number
+                } else {
+                    // If no balance exists, ensure we set it to defaultBal (0 or input)
+                    setBal(defaultBal);
                 }
             } catch (error) {
                 console.log("Error grabbing balance:", error);
             }
         }
         grabBalance();
-    }, []);
+    }, [defaultBal]);
 
     async function updateBal() {
         try {
@@ -35,19 +38,20 @@ export function BalTest({ defaultBal } = { defaultBal: 0 }) {
             const existingBal = await db.currentBal.toCollection().first();
 
             if (existingBal) {
-                // Update the existing Bal
+                // Update the existing balance
                 await db.currentBal.update(existingBal.id, {
                     balance: newBalance,
                 });
             } else {
-                // If no Bal exists, create a new one (This shouldn't Happen)
+                // If no balance exists, create a new one
                 await db.currentBal.add({
                     balance: newBalance,
                 });
             }
 
-            setBal(newBalance); // Update the balance
-            setInputBal(""); // Reset the input field
+            // reset the input field
+            setBal(newBalance);
+            setInputBal("");
         } catch (error) {
             console.log("Error updating balance:", error);
         }
