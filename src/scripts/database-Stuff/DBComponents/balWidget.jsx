@@ -19,7 +19,6 @@ export function BalWidget(){
                         ))}
                     </ul>
                 </div>
-
             </div>
         </div>
     );
