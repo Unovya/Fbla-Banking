@@ -5,8 +5,8 @@ import {BalTest} from "../scripts/database-Stuff/DBComponents/balTest.jsx";
 
 export default function Xmple2() {
     return (
-        <>
-            <div className="left-0 fixed">
+        <div className="flex bg-gray-100">
+            <div className="left-0">
                 <SideNavbar/>
             </div>
             <div
@@ -25,6 +25,6 @@ export default function Xmple2() {
                     <BalTest />
                 </div>
             </div>
-        </>
+        </div>
     );
 }
