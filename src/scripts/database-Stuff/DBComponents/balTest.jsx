@@ -50,6 +50,8 @@ export function BalTest({ defaultBal } = { defaultBal: 0 }) {
             }
 
             // reset the input field
+            const testin = (await db.currentBal.toArray()).map(bal => bal.balance);
+            console.log(testin)
             setBal(newBalance);
             setInputBal("");
         } catch (error) {
@@ -71,5 +73,5 @@ export function BalTest({ defaultBal } = { defaultBal: 0 }) {
             />
             <button onClick={updateBal} className='text-white'>Update Balance</button>
         </>
-    );
-}
+            );
+            }
