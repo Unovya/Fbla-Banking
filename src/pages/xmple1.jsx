@@ -7,8 +7,8 @@ import SideNavbar from "../components/sideNavbar.jsx";
 
 export default function Xmple1() {
     return (
-        <>
-            <div className="left-0 fixed">
+        <div className="bg-gray-100 flex">
+            <div className="left-0">
                 <SideNavbar/>
             </div>
             <div className="grid h-screen/2 items-center grid-col-1 text-2xl w-full text-center align justify-center bg-white">
@@ -30,6 +30,6 @@ export default function Xmple1() {
                     <TimeChecker/>
                 </div>
             </div>
-            </>
+            </div>
     );
 }
