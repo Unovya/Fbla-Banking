@@ -4,6 +4,7 @@ import { HiOutlinePaperClip } from "react-icons/hi2";
 import { BalWidget } from "../scripts/database-Stuff/DBComponents/balWidget.jsx";
 import { GrMoney } from "react-icons/gr";
 import {InfoCard} from "../components/infoCard.jsx";
+import {PieChart} from "../components/outPie.jsx";
 
 
 export default function HomePage() {
@@ -38,6 +39,8 @@ export default function HomePage() {
                     </div>
                 </div>
                 {/* End */}
+
+
             </div>
             {/* End */}
         </div>
