@@ -9,7 +9,11 @@ export function TransTest({ defaultBal } = { defaultBal: 0 }) {
     const [inputAction, setInputAction] = useState(""); // Deposit or withdraw
     const [inputCategory, setInputCategory] = useState(""); // Category for the transaction
 
-    // Balance Fetching (same as before)
+
+    function clearTable(){
+        db.transactionLog.clear();
+    }
+    // Grab Balance
     useEffect(() => {
         async function grabBalance() {
             try {
@@ -17,7 +21,7 @@ export function TransTest({ defaultBal } = { defaultBal: 0 }) {
                 if (existingBal) {
                     setBal(parseFloat(existingBal.balance) || 0); // Ensure balance is a number
                 } else {
-                    setBal(defaultBal); // Set default if no balance exists
+                    setBal(defaultBal); // Set to default if no balance exists
                 }
             } catch (error) {
                 console.log("Error grabbing balance:", error);
@@ -26,7 +30,6 @@ export function TransTest({ defaultBal } = { defaultBal: 0 }) {
         grabBalance();
     }, [defaultBal]);
 
-    // Update Balance logic (same as before)
     async function updateBal() {
         try {
             const intInput = parseFloat(inputBal); // Make input a number
@@ -55,6 +58,7 @@ export function TransTest({ defaultBal } = { defaultBal: 0 }) {
                 amount: intInput,
                 category: inputCategory,
                 date: new Date().toDateString(),
+                time: new Date().toLocaleTimeString(),
             });
 
             // Reset the input fields
@@ -70,6 +74,10 @@ export function TransTest({ defaultBal } = { defaultBal: 0 }) {
 
     return (
         <>
+            <div className="text-white font-medium text-lg">
+                <label>Current Balance ${balance}</label>
+            </div>
+
             <div className="text-white text-lg">
                 <label>Add Transaction</label>
             </div>
@@ -120,7 +128,7 @@ export function TransTest({ defaultBal } = { defaultBal: 0 }) {
                     <option value="entertainment">Entertainment</option>
                     <option value="bills">Bills</option>
                     <option value="shopping">Shopping</option>
-                    <option value="salary">Salary</option>
+                    <option value="work">work</option>
                 </select>
             </div>
 
@@ -134,9 +142,16 @@ export function TransTest({ defaultBal } = { defaultBal: 0 }) {
             />
 
             {/* Update Balance Button */}
-            <button onClick={updateBal} className="text-white">
-                Update Balance
-            </button>
+            <div>
+                <button onClick={updateBal} className="text-white">
+                    Add Transaction
+                </button>
+
+                <button onClick={clearTable} className="text-white">
+                    Clear Transactions
+                </button>
+            </div>
+
         </>
     );
 }
