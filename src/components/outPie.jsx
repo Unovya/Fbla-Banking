@@ -3,12 +3,16 @@ import {Chart as ChartJS, Tooltip, Legend, ArcElement} from "chart.js";
 import React from 'react'
 ChartJS.register(Tooltip, Legend, ArcElement);
 
+ const entertainmentArray = await db.transactionLogs.where('category').equals('entertainment').toArray();
+
+
+
 
 
 export const PieChart = () =>{
     const options = {}
     const data = {
-        labels: ['Entertainment', 'Food', 'Mandatory'],
+        labels: ['Entertainment', 'Food', 'Bills', 'Shopping'],
         datasets: [
             {
                 label: 'money spent',
