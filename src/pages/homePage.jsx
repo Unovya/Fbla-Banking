@@ -4,12 +4,12 @@ import { HiOutlinePaperClip } from "react-icons/hi2";
 import { BalWidget } from "../scripts/database-Stuff/DBComponents/balWidget.jsx";
 import { GrMoney } from "react-icons/gr";
 import {InfoCard} from "../components/infoCard.jsx";
-import {PieChart} from "../components/outPie.jsx";
+import {OutPie} from "../components/outPie.jsx";
 
 
 export default function HomePage() {
     return (
-        <div className="flex overflow-x-hidden bg-gray-100">
+        <div className="flex overflow-x-hidden overflow-y-hidden bg-gray-100">
             <SideNavbar />
             {/* Main Container */}
             <div className="w-full ml-12 pt-[1.9rem]">
@@ -39,6 +39,15 @@ export default function HomePage() {
                     </div>
                 </div>
                 {/* End */}
+
+                {/*Charts Container*/}
+                <div className='w-full h-[500px] flex'>
+                    <div className='ml-auto items-center justify-center mt-10 pr-20'>
+                        <div className='w-[500px] h-[500px]'>
+                            <OutPie/>
+                        </div>
+                    </div>
+                </div>
 
 
             </div>
