@@ -47,7 +47,7 @@ export function TransTest({ defaultBal } = { defaultBal: 0 }) {
             const existingBal = await db.currentBal.toCollection().first();
 
             if (existingBal) {
-                await db.currentBal.update(existingBal.id, { balance: newBalance });
+                await db.currentBal.update(existingBal.id, { balance: newBalance.toFixed(2) }); // To fixed makes sure Balance is at maximum 2 decimal digits.
             } else {
                 await db.currentBal.add({ balance: newBalance });
             }
