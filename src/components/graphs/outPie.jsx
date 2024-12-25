@@ -14,10 +14,10 @@ export const OutPie = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const entertainmentArray = await db.transactionLog.where('category').equals('entertainment').and(data => data.action === 'withdraw').toArray();
-                const foodArray = await db.transactionLog.where('category').equals('food').and(data => data.action === 'withdraw').toArray();
-                const billsArray = await db.transactionLog.where('category').equals('bills').and(data => data.action === 'withdraw').toArray();
-                const shoppingArray = await db.transactionLog.where('category').equals('shopping').and(data => data.action === 'withdraw').toArray();
+                const entertainmentArray = await db.transactionLog.where({category: 'entertainment'}).and(data => data.action === 'withdraw').toArray();
+                const foodArray = await db.transactionLog.where({category: 'food'}).and(data => data.action === 'withdraw').toArray();
+                const billsArray = await db.transactionLog.where({category: 'bills'}).and(data => data.action === 'withdraw').toArray();
+                const shoppingArray = await db.transactionLog.where({category: 'shopping'}).and(data => data.action === 'withdraw').toArray();
 
                 // add the transactions together
                 setEntertainmentAmount(entertainmentArray.reduce((cAmount, item) => cAmount + parseFloat(item.amount), 0));
