@@ -1,7 +1,6 @@
 import {useLiveQuery} from "dexie-react-hooks";
-import {db} from "../db.js";
+import {db} from "../../scripts/database-Stuff/db.js";
 import React from "react";
-import {GrMoney} from "react-icons/gr";
 
 export function BalWidget() {
     const Cbalance = useLiveQuery(() => db.currentBal.toArray());

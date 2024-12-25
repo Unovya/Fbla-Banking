@@ -1,5 +1,5 @@
 import {useLiveQuery} from "dexie-react-hooks";
-import {db} from "../db.js";
+import {db} from "../../scripts/database-Stuff/db.js";
 import React from "react";
 
 export function TransWidget() {
@@ -14,7 +14,8 @@ export function TransWidget() {
                         <br/> amount: ${transaction.amount}
                         <br/> category: {transaction.category}
                         <br/> date: {transaction.date}
-                        <br/> time: {transaction.time}</p>
+                        <br/> time: {transaction.time}
+                    </p>
                 </li>
             ))}
         </ul>
