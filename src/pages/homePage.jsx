@@ -1,10 +1,10 @@
 import React from "react";
 import SideNavbar from "../components/sideNavbar.jsx";
 import { HiOutlinePaperClip } from "react-icons/hi2";
-import { BalWidget } from "../scripts/database-Stuff/DBComponents/balWidget.jsx";
+import { BalWidget } from "../components/DBComponents/balWidget.jsx";
 import { GrMoney } from "react-icons/gr";
 import {InfoCard} from "../components/infoCard.jsx";
-import {OutPie} from "../components/outPie.jsx";
+import {OutPie} from "../components/graphs/outPie.jsx";
 
 
 export default function HomePage() {

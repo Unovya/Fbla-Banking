@@ -1,8 +1,8 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import SideNavbar from "../components/sideNavbar.jsx";
-import {TransTest} from "../scripts/database-Stuff/DBComponents/transTest.jsx";
-import {TransWidget} from "../scripts/database-Stuff/DBComponents/transTestWid.jsx";
+import {TransTest} from "../components/DBComponents/transTest.jsx";
+import {TransWidget} from "../components/DBComponents/transTestWid.jsx";
 
 export default function Xmple2() {
     return (
