@@ -11,8 +11,9 @@ const SideNavbar = () => {
     const [open, setOpen] = React.useState(true);
     const Menus = [
         {title: "Dashboard", icon: <RiDashboardFill />, link: "/"},
-        {title: "Example1", icon: <BsBoxSeam />, link: "/example1"},
-        {title: "Example2", icon: <BsBracesAsterisk />, link: "/example2",  spacing: true},
+        {title: "Transactions", icon: <RiDashboardFill />, link: "/transactionPg"},
+        {title: "Example1", icon: <BsBoxSeam />, link: "/example1", spacing: true},
+        {title: "Example2", icon: <BsBracesAsterisk />, link: "/example2"},
     ]
 
     return (
