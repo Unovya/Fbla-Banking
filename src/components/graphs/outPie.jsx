@@ -20,10 +20,10 @@ export const OutPie = () => {
                 const shoppingArray = await db.transactionLog.where({category: 'shopping'}).and(data => data.action === 'withdraw').toArray();
 
                 // add the transactions together
-                setEntertainmentAmount(entertainmentArray.reduce((cAmount, item) => cAmount + parseFloat(item.amount), 0));
-                setFoodAmount(foodArray.reduce((cAmount, item) => cAmount + parseFloat(item.amount), 0));
-                setBillsAmount(billsArray.reduce((cAmount, item) => cAmount + parseFloat(item.amount), 0));
-                setShoppingAmount(shoppingArray.reduce((cAmount, item) => cAmount + parseFloat(item.amount), 0));
+                setEntertainmentAmount(entertainmentArray.reduce((cAmount, item) => cAmount + parseFloat(item.amount.toFixed(2)), 0));
+                setFoodAmount(foodArray.reduce((cAmount, item) => cAmount + parseFloat(item.amount.toFixed(2)), 0));
+                setBillsAmount(billsArray.reduce((cAmount, item) => cAmount + parseFloat(item.amount.toFixed(2)), 0));
+                setShoppingAmount(shoppingArray.reduce((cAmount, item) => cAmount + parseFloat(item.amount.toFixed(2)), 0));
             } catch (error) {
                 console.error("Error:", error);
             }
