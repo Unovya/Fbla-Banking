@@ -7,7 +7,7 @@ export function TransWidget() {
 
     return (
         <ul className='space-y-9'>
-            {transactions?.map((transaction) => (
+            {transactions?.reverse().map((transaction) => (
                 <li key={transaction.id} className='flex items-center text-center text-xl content-center'>
                     <p className='font-bold items-center text-white text-center'>name: {transaction.name}
                         <br/> action: {transaction.action}
