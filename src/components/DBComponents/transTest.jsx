@@ -40,6 +40,11 @@ export function TransTest({ defaultBal } = { defaultBal: 0 }) {
                 return;
             }
 
+            if (intInput < 0.01) {
+                console.error("Invalid input or balance: less than 1 cent");
+                return;
+            }
+
             const newBalance = inputAction === "deposit"
                 ? intBalance + intInput
                 : intBalance - intInput; // Subtract if action is 'withdraw'
