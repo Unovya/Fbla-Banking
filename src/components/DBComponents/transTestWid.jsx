@@ -23,13 +23,11 @@ export function TransWidget() {
                         <li key={transaction.id} className='flex  items-center w-fit text-center min-h-fit text-xl content-center m-4 first:space-x-0 first:space-y-0'>
                             <div className={`w-full m-0 sm:w-80 md:w-96 flex flex-col bg-white border ${transColorPicker(transaction.category)} border-t-4 shadow-sm rounded-xl`}>
                                 <div className='p-0 md:p-1'>
-                                    <p className='font-bold items-center text-black text-center'>
-                                        name: {transaction.name}
-                                        <br/> action: {transaction.action}
-                                        <br/> amount: ${transaction.amount}
-                                        <br/> category: {transaction.category}
-                                        <br/> date: {transaction.date}
-                                        <br/> time: {transaction.time}
+                                    <p className='font-medium items-center text-black text-center'>
+                                        <div className='font-bold'>{transaction.name}</div>
+                                        {transaction.action === 'withdraw' && `Withdrawal of -$${transaction.amount}`}  {transaction.action === 'deposit' && `deposit of +$${transaction.amount}`} <br />
+                                        {transaction.action === 'withdraw' && `Spent on ${transaction.category}`} {transaction.action === 'deposit' && `from: ${transaction.category}`} <br />
+                                        Transaction made: {transaction.date} {transaction.time}
                                     </p>
                                 </div>
                             </div>
