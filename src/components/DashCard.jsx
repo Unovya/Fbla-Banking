@@ -1,6 +1,6 @@
 import React from "react";
 
-export function InfoCard({ title, content, borderColor, icon }) {
+export function DashCard({ title, content, borderColor, icon }) {
     return (
         <div
             className={`w-full sm:w-80 md:w-96 flex flex-col bg-white border border-t-4 ${borderColor} shadow-sm rounded-xl mt-6`}>
