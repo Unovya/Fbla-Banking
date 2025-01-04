@@ -60,7 +60,7 @@ export function TransTest({ defaultBal } = { defaultBal: 0 }) {
             await db.transactionLog.add({
                 name: inputName,
                 action: inputAction,
-                amount: intInput,
+                amount: intInput.toFixed(2),
                 category: inputCategory,
                 date: new Date().toDateString(),
                 time: new Date().toLocaleTimeString(),
