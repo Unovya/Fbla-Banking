@@ -19,7 +19,7 @@ export function TransWidget() {
     const transactions = useLiveQuery(() => db.transactionLog.toArray());
     return (
                 <ul className='space-x-4  flex mt-6 flex-wrap'>
-                    {transactions?.reverse().map((transaction) => (
+                    {[...(transactions ?? [])].reverse().map((transaction) => (
                         <li key={transaction.id} className='flex  items-center w-fit text-center min-h-fit text-xl content-center m-4 first:space-x-0 first:space-y-0'>
                             <div className={`w-full m-0 sm:w-80 md:w-96 flex flex-col bg-white border ${transColorPicker(transaction.category)} border-t-4 shadow-sm rounded-xl`}>
                                 <div className='p-0 md:p-1'>
