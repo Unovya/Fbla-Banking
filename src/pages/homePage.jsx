@@ -3,7 +3,7 @@ import SideNavbar from "../components/sideNavbar.jsx";
 import { HiOutlinePaperClip } from "react-icons/hi2";
 import { BalWidget } from "../components/DBComponents/balWidget.jsx";
 import { GrMoney } from "react-icons/gr";
-import {InfoCard} from "../components/infoCard.jsx";
+import {DashCard} from "../components/DashCard.jsx";
 import {OutPie} from "../components/graphs/outPie.jsx";
 
 
@@ -26,16 +26,16 @@ export default function HomePage() {
                 <div className="flex flex-wrap justify-start space-x-5 gap-5">
                     {/* Top Cards */}
                     <div className="w-full sm:w-80 md:w-96">
-                        <InfoCard title="Balance" content=<BalWidget/> borderColor="border-green-600" icon=<GrMoney className='text-3xl ml-44'/>/>
+                        <DashCard title="Balance" content=<BalWidget/> borderColor="border-green-600" icon=<GrMoney className='text-3xl ml-44'/>/>
                     </div>
                     <div className="w-full sm:w-80 md:w-96">
-                        <InfoCard title="PlaceHolder" content="PlaceHolder" borderColor="border-violet-600" icon=<GrMoney className='text-3xl ml-44'/>/>
+                        <DashCard title="PlaceHolder" content="PlaceHolder" borderColor="border-violet-600" icon=<GrMoney className='text-3xl ml-44'/>/>
                     </div>
                     <div className="w-full sm:w-80 md:w-96">
-                        <InfoCard title="PlaceHolder 2" content="PlaceHolder 2" borderColor="border-red-600" icon=<GrMoney className='text-3xl ml-44'/>/>
+                        <DashCard title="PlaceHolder 2" content="PlaceHolder 2" borderColor="border-red-600" icon=<GrMoney className='text-3xl ml-44'/>/>
                     </div>
                     <div className="w-full sm:w-80 md:w-96">
-                        <InfoCard title="PlaceHolder 3" content="PlaceHolder 3" borderColor="border-blue-600" icon=<GrMoney className='text-3xl ml-44'/>/>
+                        <DashCard title="PlaceHolder 3" content="PlaceHolder 3" borderColor="border-blue-600" icon=<GrMoney className='text-3xl ml-44'/>/>
                     </div>
                 </div>
                 {/* End */}
