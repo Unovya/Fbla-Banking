@@ -25,17 +25,17 @@ export default function HomePage() {
                 {/* Top Cards container */}
                 <div className="flex flex-wrap justify-start space-x-5 gap-5">
                     {/* Top Cards */}
-                    <div className="w-full sm:w-80 md:w-96">
-                        <DashCard title="Balance" content=<BalWidget/> borderColor="border-green-600" icon=<GrMoney className='text-3xl ml-44'/>/>
+                    <div className="w-80 sm:w-64 md:w-72">
+                        <DashCard title="Balance" content=<BalWidget/> borderColor="border-green-600" icon=<GrMoney className='text-3xl float-right'/>/>
                     </div>
-                    <div className="w-full sm:w-80 md:w-96">
-                        <DashCard title="PlaceHolder" content="PlaceHolder" borderColor="border-violet-600" icon=<GrMoney className='text-3xl ml-44'/>/>
+                    <div className="w-80 sm:w-64 md:w-72">
+                        <DashCard title="PlaceHolder" content="PlaceHolder" borderColor="border-violet-600" icon=<GrMoney className='text-3xl float-right'/>/>
                     </div>
-                    <div className="w-full sm:w-80 md:w-96">
-                        <DashCard title="PlaceHolder 2" content="PlaceHolder 2" borderColor="border-red-600" icon=<GrMoney className='text-3xl ml-44'/>/>
+                    <div className="w-80 sm:w-64 md:w-72">
+                        <DashCard title="PlaceHolder 2" content="PlaceHolder 2" borderColor="border-red-600" icon=<GrMoney className='text-3xl float-right'/>/>
                     </div>
-                    <div className="w-full sm:w-80 md:w-96">
-                        <DashCard title="PlaceHolder 3" content="PlaceHolder 3" borderColor="border-blue-600" icon=<GrMoney className='text-3xl ml-44'/>/>
+                    <div className="w-80 sm:w-64 md:w-72">
+                        <DashCard title="PlaceHolder 3" content="PlaceHolder 3" borderColor="border-blue-600" icon=<GrMoney className='text-3xl float-right'/>/>
                     </div>
                 </div>
                 {/* End */}
@@ -43,7 +43,7 @@ export default function HomePage() {
                 {/*Charts Container*/}
                 <div className='w-full h-[500px] flex'>
                     <div className='ml-auto items-center justify-center mt-10 pr-20'>
-                        <div className='w-[500px] h-[500px]'>
+                        <div className='w-[400px] h-[400px]'>
                             <OutPie/>
                         </div>
                     </div>
