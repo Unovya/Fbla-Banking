@@ -1,7 +1,6 @@
 import React from "react";
 import SideNavbar from "../components/sideNavbar.jsx";
-import {HiOutlinePaperClip} from "react-icons/hi2";
-import {TransWidget} from "../components/DBComponents/transTestWid.jsx";
+import Transactions from "../components/transactions.jsx";
 
 
 
@@ -24,12 +23,7 @@ export default function TransactionsPage() {
                 {/* Filter container */}
 
                 {/* Transactions scroll area*/}
-                <div className=" bg-gray-800 text-3xl align-text-top font-normal flex mb-[-20px]  pb-[30px] mt-20 items-center w-11/12 h-14 rounded-lg ">
-                    <p className='text-white ml-5 mt-2 text-[19px]'>My Transactions</p>
-                </div>
-                <div className='flex flex-col bg-white rounded-xl h-72 w-11/12'>
-
-                </div>
+                <Transactions />
             </div>
         </div>
     )}
