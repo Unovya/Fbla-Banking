@@ -10,8 +10,8 @@ export function TransTest({ defaultBal } = { defaultBal: 0 }) {
     const [inputCategory, setInputCategory] = useState(""); // Category for the transaction
 
 
-    function clearTable(){
-        db.transactionLog.clear();
+    async function clearTable(){
+       await db.transactionLog.clear();
     }
     // Grab Balance
     useEffect(() => {
@@ -56,6 +56,7 @@ export function TransTest({ defaultBal } = { defaultBal: 0 }) {
             } else {
                 await db.currentBal.add({ balance: newBalance });
             }
+
 
             await db.transactionLog.add({
                 name: inputName,
