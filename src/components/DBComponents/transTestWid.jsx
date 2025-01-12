@@ -47,9 +47,11 @@ export function TransWidget() {
 
 
     return (
-        <>
+        <> {/* Blurring div */}
             <div className={`flex flex-col m-5 bg-gray-100 overflow-x-hidden overflow-y-auto drop-shadow rounded-xl h-[90%] w-[69%] ${Popup ? 'backdrop-blur-sm' : ''}`}>
+                {/* Scroll Area */}
                 <div className='flex flex-col m-5 bg-gray-100 overflow-x-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 rounded-xl h-[90%] w-[95%]'>
+                    {/* Top row */}
                     <div className='flex flex-row bg-white h-6 ml-3 mr-3 mt-3 mb-1 rounded w-[98%] font-bold shadow'>
                         <p className='ml-3 w-[55px] text-left'>ID #</p>
                         <p className='w-[150px] text-left'>Name</p>
@@ -59,7 +61,7 @@ export function TransWidget() {
                         <p className=''>Date</p>
                     </div>
 
-
+                    {/* Transactions Rows */}
                     <ul>
                         {[...(transactions ?? [])].reverse().map((transaction) => (
                             <li key={transaction.id} className='last:mb-3'>
