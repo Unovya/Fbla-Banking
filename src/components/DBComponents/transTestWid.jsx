@@ -85,7 +85,7 @@ export function TransWidget() {
                 </div>
             </div>
 
-            <div className='flex flex-col mt-5 h-[90%] w-[30%]   mt-5 ml-2'>
+            <div className='flex flex-col h-[90%] w-[30%] mt-5 ml-2'>
                 <div className='flex flex-col bg-gray-100 mb-5 overflow-x-hidden overflow-y-hidden rounded-xl h-[31%] items-center'>
                     <h1 className='mt-3 mx-3 text-black font-bold w-fit'>Transaction Details</h1>
                     <p>Transaction Id: #{TransName !== ''  && TransId }</p>
