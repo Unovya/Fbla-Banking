@@ -1,6 +1,5 @@
 import React from 'react';
 import {TransWidget} from "./DBComponents/transTestWid.jsx";
-import {AddTransactions} from "./addTransactions.jsx"
 
 
 const Transactions = () => {
@@ -12,7 +11,6 @@ const Transactions = () => {
             </div>
             <div className='flex flex-row bg-white rounded-xl h-[80%] shadow w-[94%]'>
                 <TransWidget />
-                <AddTransactions />
             </div>
         </>
 )
