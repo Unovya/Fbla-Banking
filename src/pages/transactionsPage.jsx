@@ -20,9 +20,7 @@ export default function TransactionsPage() {
                 <div className="text-black text-3xl font-normal flex mb-4 items-center space-x-10">
                     <h3 className="flex">My Transactions</h3>
                 </div>
-                {/* Filter container */}
-
-                {/* Transactions scroll area*/}
+                {/* Transactions area*/}
                 <Transactions />
             </div>
         </div>
