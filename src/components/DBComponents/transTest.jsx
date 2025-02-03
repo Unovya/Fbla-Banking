@@ -8,6 +8,7 @@ export function TransTest({ defaultBal } = { defaultBal: 0 }) {
     const [inputName, setInputName] = useState("");
     const [inputAction, setInputAction] = useState(""); // Deposit or withdraw
     const [inputCategory, setInputCategory] = useState(""); // Category for the transaction
+    const [dropDownToggle, setDropDownToggle] = useState(false);
 
 
     async function clearTable(){
