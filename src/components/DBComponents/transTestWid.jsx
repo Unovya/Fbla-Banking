@@ -1,7 +1,6 @@
 import {useLiveQuery} from "dexie-react-hooks";
 import {db} from "../../scripts/database-Stuff/db.js";
-import React from "react";
-import {AddTransactions} from "../addTransactions.jsx"
+import React, {useEffect, useRef, useState} from "react";
 
 function colorSwitch(num) {
     if (num % 2 === 0) return "bg-gray-200 hover:bg-gray-300";
@@ -14,7 +13,8 @@ function shorten(num, maxLength) {
     return num;
 }
 
-export function TransWidget() {
+
+export function TransWidget({ defaultBal } = { defaultBal: 0 }) {
     const transactions = useLiveQuery(() => db.transactionLog.toArray());
 
     const [TransAction, setTransAction] = React.useState('');
@@ -40,8 +40,31 @@ export function TransWidget() {
     const [inputAction, setInputAction] = useState(""); // Deposit or withdraw
     const [inputCategory, setInputCategory] = useState(""); // Category for the transaction
     const [dropDownToggle, setDropDownToggle] = useState(false);
+    const dropdownRef = useRef(null);
 
-    const toggleDropDown = () => console.log('test');
+    const toggleDropDown = () => setDropDownToggle(!dropDownToggle);
+
+    useEffect(() => {
+        const clickOutsideDropdown = (e) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+                setDropDownToggle(false); // Close the dropdown if clicked outside
+            }
+
+        };
+
+        document.addEventListener('mousedown', clickOutsideDropdown);
+
+        return () => {
+            // Cleanup event listener on component unmount
+            document.removeEventListener('mousedown', clickOutsideDropdown);
+        };
+    }, [])
+
+    const categorySelect = (category) =>{
+        setTransCategory(category);
+        setDropDownToggle(false);
+
+    }
 
     async function clearTable(){
         await db.transactionLog.clear();
@@ -117,6 +140,7 @@ export function TransWidget() {
     return (
         <>
             {/* Blurring div and gray area */}
+
             <div
                 className={`flex flex-row ml-3 mt-5 mb-5 mr-1 bg-gray-100 overflow-x-hidden overflow-y-auto drop-shadow rounded-xl h-[95%] w-[67%]}`}>
                 {/* Scroll Area */}
@@ -153,6 +177,7 @@ export function TransWidget() {
                 </div>
             </div>
 
+            {/*details*/}
             <div className='flex flex-col h-[85%] w-[30%] mt-5 ml-2'>
                 <div
                     className='flex flex-col bg-gray-100 mb-5 overflow-x-hidden overflow-y-hidden rounded-xl h-[31%] items-center'>
@@ -165,7 +190,55 @@ export function TransWidget() {
                     <p>Date of Transaction: {TransDate.charAt(0).toUpperCase() + TransDate.slice(1)}</p>
                 </div>
 
-                <AddTransactions/>
+
+                {/* Add Transactions */}
+                <div
+                    className='flex flex-col bg-gray-100 overflow-x-hidden h-[55%] overflow-y-hidden rounded-xl  items-center'>
+                    <h1 className='mt-3 mx-3 text-black font-bold w-fit'>Add Transaction</h1>
+                    {/* input fields */}
+                    <div className='justify-center items-center text-center space-y-3'>
+                        <div className="text-white font-medium text-lg">
+                            <label className='text-black'>Current Balance ${balance}</label>
+                        </div>
+
+                        {/* Name input */}
+                        <input
+                            type="text"
+                            value={inputName}
+                            onChange={(evN) => setInputName(evN.target.value)}
+                            placeholder="Name of Transaction"
+                            className="text-black rounded-xl  h-11"
+                        />
+
+                        <div className="relative flex flex-col justify-center items-center text-center">
+                            <button
+                                className='bg-white text-gray-500 outline outline-black rounded-xl h-11 w-52 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200'
+                                type='button' onClick={toggleDropDown}>
+                                Choose category
+                            </button>
+
+                            <div ref={dropdownRef} className={`absolute top-full mt-2 w-52 bg-white divide-y divide-gray-100 rounded-lg shadow-md ${dropDownToggle ? 'opacity-100 scale-100' : 'opacity-0 scale-95'} transition-all duration-300`}>
+                                <ul className="py-2 text-sm text-gray-700">
+                                    <li>
+                                        <button onClick={(e) => categorySelect(e.target.textContent)}  className="block px-4 py-2 hover:bg-gray-100">Dashboard</button>
+                                    </li>
+                                    <li>
+                                        <button onClick={(e) => categorySelect(e.target.textContent)} className="block px-4 py-2 hover:bg-gray-100">Settings</button>
+                                    </li>
+                                    <li>
+                                        <button onClick={(e) => categorySelect(e.target.textContent)} className="block px-4 py-2 hover:bg-gray-100">Earnings</button>
+                                    </li>
+                                    <li>
+                                        <button onClick={(e) => categorySelect(e.target.textContent)} className="block px-4 py-2 hover:bg-gray-100">Sign out</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
             </div>
         </>
     )
