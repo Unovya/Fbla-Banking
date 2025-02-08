@@ -9,6 +9,7 @@ export const OutPie = () => {
     const [foodAmount, setFoodAmount] = useState(0);
     const [billsAmount, setBillsAmount] = useState(0);
     const [shoppingAmount, setShoppingAmount] = useState(0);
+    const [otherAmount, setOtherAmount] = useState(0);
 
     // grab all the transaction data on page load
     useEffect(() => {
@@ -18,19 +19,21 @@ export const OutPie = () => {
                 const foodArray = await db.transactionLog.where({category: 'food'}).and(data => data.action === 'withdraw').toArray();
                 const billsArray = await db.transactionLog.where({category: 'bills'}).and(data => data.action === 'withdraw').toArray();
                 const shoppingArray = await db.transactionLog.where({category: 'shopping'}).and(data => data.action === 'withdraw').toArray();
+                const otherArray = await db.transactionLog.where({category: 'other'}).and(data => data.action === 'withdraw').toArray();
 
                 // add the transactions together
                 setEntertainmentAmount(entertainmentArray.reduce((cAmount, item) => cAmount + parseFloat(item.amount), 0));
                 setFoodAmount(foodArray.reduce((cAmount, item) => cAmount + parseFloat(item.amount), 0));
                 setBillsAmount(billsArray.reduce((cAmount, item) => cAmount + parseFloat(item.amount), 0));
                 setShoppingAmount(shoppingArray.reduce((cAmount, item) => cAmount + parseFloat(item.amount), 0));
+                setOtherAmount(otherArray.reduce((cAmount, item) => cAmount + parseFloat(item.amount), 0));
+
             } catch (error) {
                 console.error("Error:", error);
             }
         };
 
         fetchData();
-        console.log(foodAmount);
     }, []);
 
     // Chart data
@@ -39,7 +42,7 @@ export const OutPie = () => {
         datasets: [
             {
                 label: 'Money Spent',
-                data: [entertainmentAmount, foodAmount, billsAmount, shoppingAmount],
+                data: [entertainmentAmount, foodAmount, billsAmount, shoppingAmount, otherAmount],
                 backgroundColor: [
                     "rgba(255,99,132,0.7)",
                     "rgba(54,162,235,0.7)",
