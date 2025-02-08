@@ -71,8 +71,11 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
     }
 
 
-    async function clearTable(){
-        await db.transactionLog.clear();
+    function clearFields(){
+        setInputBal("");
+        setInputName("");
+        setInputAction("Choose an Action");
+        setInputCategory("Choose a Category");
     }
 
     useEffect(() => {
@@ -250,10 +253,10 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                     </button>
 
                     <button
-                        onClick={clearTable}
+                        onClick={clearFields}
                         className="text-gray-700 bg-white border border-black rounded-xl h-11 w-52 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200 flex items-center justify-center shadow-md"
                     >
-                        Clear Transactions
+                        Clear Fields
                     </button>
                 </div>
             </div>
