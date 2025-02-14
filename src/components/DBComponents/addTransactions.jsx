@@ -16,8 +16,7 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
 
     const toggleCategoryDropDown = () =>{
         if (inputAction !== 'deposit' && inputAction !== 'withdraw'){
-            setTransErrorStatus('You must select an action before a category! ')
-            console.log('testyes')
+            setTransErrorStatus('You must select an action before a category')
         }
         else {
             setCategoryDropDownToggle(!categoryDropDownToggle);
@@ -76,6 +75,9 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
         setInputName("");
         setInputAction("Choose an Action");
         setInputCategory("Choose a Category");
+        setTransErrorStatus('')
+        console.log('nun atm'); // Change to check values
+
     }
 
     useEffect(() => {
@@ -97,7 +99,7 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
     async function updateBal() {
         try {
             if (inputName === '' || inputAction === 'Choose an Action' || inputCategory ==='Choose a Category' || inputBal === ''){
-                setTransErrorStatus('*All fields must be completed!')
+                setTransErrorStatus('*All fields must be completed')
                 console.log('must fill all fields')
                 return
             } else {
@@ -238,7 +240,7 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                         type="number"
                         value={inputBal}
                         onChange={(evN) => setInputBal(evN.target.value)}
-                        placeholder="Amount of Transaction"
+                        placeholder="Transaction Amount"
                         className="text-gray-700  rounded-xl shadow-md border-black h-11"
                     />
 
@@ -247,17 +249,16 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                 <div className="flex space-x-4 mt-10">
                     <button
                         onClick={updateBal}
-                        className="text-gray-700 bg-white border border-black rounded-xl h-11 w-52 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200 flex items-center justify-center shadow-md"
+                        className="text-gray-700 bg-white border border-black rounded-xl h-11 w-11/12 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200 flex items-center justify-center shadow-md"
                     >
                         Add Transaction
                     </button>
 
-                    <button
-                        onClick={clearFields}
-                        className="text-gray-700 bg-white border border-black rounded-xl h-11 w-52 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200 flex items-center justify-center shadow-md"
-                    >
+                    <button onClick={clearFields} className="text-gray-700 bg-white border border-black rounded-xl h-11 w-11/12 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200 flex items-center justify-center shadow-md">
                         Clear Fields
                     </button>
+
+                    {/* Add Selected Delete */}
                 </div>
             </div>
         </>
