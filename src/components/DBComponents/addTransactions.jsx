@@ -99,11 +99,11 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
     async function updateBal() {
         try {
             if (inputName === '' || inputAction === 'Choose an Action' || inputCategory ==='Choose a Category' || inputBal === ''){
-                setTransErrorStatus('*All fields must be completed')
-                console.log('must fill all fields')
-                return
+                setTransErrorStatus('*All fields must be completed');
+                console.log('must fill all fields');
+                return;
             } else {
-                setTransErrorStatus('')
+                setTransErrorStatus('');
             }
 
             
