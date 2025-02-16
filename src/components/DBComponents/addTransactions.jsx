@@ -106,8 +106,16 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                 setTransErrorStatus('')
             }
 
+            
+
             const intInput = parseFloat(inputBal); // Make input a number
             const intBalance = parseFloat(balance); // Current balance
+
+            if (intInput > intBalance && inputAction === 'withdraw'){
+                setTransErrorStatus(`You do not have $${intInput}`);
+                return;
+            }
+
 
             if (isNaN(intInput) || isNaN(intBalance)) {
                 console.error("Invalid input or balance: not a number");
