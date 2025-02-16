@@ -29,7 +29,7 @@ export default function HomePage() {
                         <DashCard title="Balance" content=<BalWidget/> borderColor="border-green-600" icon=<GrMoney className='text-3xl float-right'/>/>
                     </div>
                     <div className="w-80 sm:w-64 md:w-72">
-                        <DashCard title="PlaceHolder" content="PlaceHolder" borderColor="border-violet-600" icon=<GrMoney className='text-3xl float-right'/>/>
+                        <DashCard title="PlaceHolder 1" content="PlaceHolder 1" borderColor="border-violet-600" icon=<GrMoney className='text-3xl float-right'/>/>
                     </div>
                     <div className="w-80 sm:w-64 md:w-72">
                         <DashCard title="PlaceHolder 2" content="PlaceHolder 2" borderColor="border-red-600" icon=<GrMoney className='text-3xl float-right'/>/>

@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 
 const SideNavbar = () => {
     //Define Colors
-    const BGColor = "bg-gray-800"
+    const BGColor = "bg-violet-800"
     // stop
 
     const [open, setOpen] = React.useState(true);
