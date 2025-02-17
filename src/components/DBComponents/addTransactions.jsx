@@ -65,6 +65,7 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
     }
     const actionSelect = (action) =>{
         setInputAction(action);
+        setInputCategory("Choose a Category");
         setActionDropDownToggle(false);
 
     }
@@ -139,13 +140,13 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                 await db.currentBal.add({ balance: newBalance });
             }
 
-
+            let utcDate = new Date();
             await db.transactionLog.add({
                 name: inputName,
                 action: inputAction,
                 amount: intInput.toFixed(2),
                 category: inputCategory,
-                date: new Date().toDateString(),
+                date: new Date(utcDate.getTime() - utcDate.getTimezoneOffset() * 60000).toISOString().split('T')[0], // gets the correct timezone from utc then turns it into "yyyy-mm-dd" Format
                 time: new Date().toLocaleTimeString(),
             });
 
@@ -249,7 +250,7 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                         value={inputBal}
                         onChange={(evN) => setInputBal(evN.target.value)}
                         placeholder="Transaction Amount"
-                        className="text-gray-700  rounded-xl shadow-md border-black h-11 text-center"
+                        className="text-gray-700 appearance-none text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none rounded-xl shadow-md border-black h-11"
                     />
 
                 </div>
