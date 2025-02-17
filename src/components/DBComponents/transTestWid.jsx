@@ -174,17 +174,16 @@ export function TransWidget() {
             </div>
 
             {/*details*/}
-            <div className='flex flex-col h-[95%] w-[30%] mt-5 ml-2'>
-                <div
-                    className='flex flex-col bg-gray-100 mb-5 overflow-x-hidden shadow-md overflow-y-hidden rounded-xl h-[31%] items-center'>
-                    <h1 className='mt-3 mx-3 text-black font-bold w-fit'>Transaction Details</h1>
-                    <p className='flex flex-row'>Transaction Id: #{TransId}</p>
-                    <p>Name of Transaction: {TransName.charAt(0).toUpperCase() + TransName.slice(1)}</p>
-                    <p>Category: {TransCategory.charAt(0).toUpperCase() + TransCategory.slice(1)}</p>
-                    <p>Action: {TransAction.charAt(0).toUpperCase() + TransAction.slice(1)}</p>
-                    <p>Amount: {TransAction === 'withdraw' && "-"}{TransAction === 'deposit' && "+"}${TransAmount}</p>
-                    <p>Date of Transaction: {TransDate.charAt(0).toUpperCase() + TransDate.slice(1)}</p>
-                </div>
+            <div className='flex flex-col h-[95%] w-[30%] mt-5 ml-2 items-center justify-center'>
+                <div className='flex flex-col bg-gray-100 mb-5 overflow-x-hidden shadow-md overflow-y-hidden rounded-xl h-[31%] w-full p-4'>
+                    <h1 className='text-black font-bold w-full text-center'>Transaction Details</h1>
+                    <p className='w-full text-left'>Transaction Id: #{TransId}</p>
+                    <p className='w-full text-left'>Name of Transaction: {TransName.charAt(0).toUpperCase() + TransName.slice(1)}</p>
+                    <p className='w-full text-left'>Category: {TransCategory.charAt(0).toUpperCase() + TransCategory.slice(1)}</p>
+                    <p className='w-full text-left'>Action: {TransAction.charAt(0).toUpperCase() + TransAction.slice(1)}</p>
+                    <p className='w-full text-left'>Amount: {TransAction === 'withdraw' && "-"}{TransAction === 'deposit' && "+"}${TransAmount}</p>
+                    <p className='w-full text-left'>Date of Transaction: {TransDate.charAt(0).toUpperCase() + TransDate.slice(1)}</p>
+            </div>
 
                 {/* Add Transactions */}
                 <AddTransactions />
