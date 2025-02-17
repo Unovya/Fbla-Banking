@@ -25,7 +25,7 @@ const SideNavbar = () => {
                 <Link to="/">
                     <BsBezier2 className={`${BGColor} text-white text-4xl cursor-pointer block float-left ${open && "rotate-[360deg] duration-700"} ${!open && "rotate-[-360deg] duration-700"}`} />
                 </Link>
-                <h1 className={` origin-left font-medium text-2xl text-white duration-300 ${!open && "scale-0"} `}>PlaceHolder</h1>
+                <h1 className={` origin-left font-medium text-2xl text-white duration-300 ${!open && "scale-0"} `}>SpendWise</h1>
             </div>
 
             <ul className="pt-2">
