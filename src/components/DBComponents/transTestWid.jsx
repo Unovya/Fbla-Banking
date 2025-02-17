@@ -1,7 +1,7 @@
-import {useLiveQuery} from "dexie-react-hooks";
 import {db} from "../../scripts/database-Stuff/db.js";
 import React, {useEffect, useRef, useState} from "react";
 import AddTransactions from "./addTransactions.jsx";
+import {useLiveQuery} from "dexie-react-hooks";
 
 function colorSwitch(num) {
     if (num % 2 === 0) return "bg-gray-200 hover:bg-gray-300";
@@ -16,7 +16,8 @@ function shorten(num, maxLength) {
 
 
 export function TransWidget() {
-    const transactions = useLiveQuery(() => db.transactionLog.toArray());
+
+    const transactions = useLiveQuery(() => db.transactionLog.toArray(), [], []);
 
     const [TransAction, setTransAction] = React.useState('');
     const [TransName, setTransName] = React.useState('');
@@ -25,7 +26,6 @@ export function TransWidget() {
     const [TransId, setTransId] = React.useState('');
     const [TransAmount, setTransAmount] = React.useState(0);
     const [FilterOpen, setFilterOpen] = React.useState(false);
-
 
 
 
@@ -43,8 +43,8 @@ export function TransWidget() {
     // Filter
     const [FilterID, setFilterID] = React.useState('');
     const [FilterName, setFilterName] = React.useState('');
-    const [FilterCategory, setFilterCategory] = React.useState('');
-    const [FilterAction, setFilterAction] = React.useState('');
+    const [FilterCategory, setFilterCategory] = React.useState('Category');
+    const [FilterAction, setFilterAction] = React.useState('Action');
     const [FilterAmount, setFilterAmount] = React.useState('');
     const [FilterDate, setFilterDate] = React.useState('');
     const [filterErrorStatus, setFilterErrorStatus] = React.useState('');
@@ -69,16 +69,86 @@ export function TransWidget() {
 
     }
     const toggleCategoryDropDown = () =>{
-        if (FilterAction !== 'deposit' && FilterAmount !== 'withdraw'){
-            setFilterErrorStatus('You must select an action before a category')
-        }
-        else {
-            setCategoryDropDownToggle(!categoryDropDownToggle);
-            setFilterErrorStatus('')
-        }
-
+        setCategoryDropDownToggle(!categoryDropDownToggle);
+        setFilterErrorStatus('')
+    }
+    const toggleActionDropDown = () =>{
+        setActionDropDownToggle(!actionDropDownToggle);
+        setFilterErrorStatus('')
     }
 
+
+
+    const [filteredTransactions, setFilteredTransactions] = useState(transactions);
+
+    useEffect(() => {
+        let filtered = transactions;
+
+        if (FilterID) {
+            filtered = filtered.filter((transaction) => transaction.id.toString().includes(FilterID.toString()));
+        }
+        if (FilterName) {filtered = filtered.filter((transaction) => transaction.name.toLowerCase().includes(FilterName.toLowerCase()));
+        }
+        if (FilterCategory && FilterCategory !== 'Category') {
+            filtered = filtered.filter((transaction) => transaction.category === FilterCategory);
+        }
+        if (FilterAction && FilterAction !== 'Action') {
+            filtered = filtered.filter((transaction) => transaction.action === FilterAction);
+        }
+        if (FilterAmount) {
+            filtered = filtered.filter((transaction) => transaction.amount.toString().includes(FilterAmount.toString()));
+        }
+        if (FilterDate) {
+            filtered = filtered.filter((transaction) => transaction.date === FilterDate);
+        }
+
+        setFilteredTransactions(filtered);
+    }, [transactions, FilterID, FilterName, FilterCategory, FilterAction, FilterAmount, FilterDate]);
+
+    function clearFilter(){
+        setFilteredTransactions(transactions)
+
+        setFilterID('')
+        setFilterName('')
+        setFilterCategory('Category')
+        setFilterAction('Action')
+        setFilterAmount('')
+        setFilterDate('')
+    }
+
+
+
+    useEffect(() => {
+        const clickOutsideDropdown = (e) => {
+            if (categoryDropdownRef.current && !categoryDropdownRef.current.contains(e.target)) {
+                setCategoryDropDownToggle(false); // Close the dropdown if clicked outside
+            }
+
+        };
+        // listen for clicks
+        document.addEventListener('mousedown', clickOutsideDropdown);
+
+        return () => {
+            // stop listening for clicks
+            document.removeEventListener('mousedown', clickOutsideDropdown);
+        };
+    }, [])
+
+    useEffect(() => {
+        const clickOutsideDropdown = (e) => {
+            if (actionDropdownRef.current && !actionDropdownRef.current.contains(e.target)) {
+                setActionDropDownToggle(false); // Close the dropdown if clicked outside
+            }
+
+        };
+        // listen for clicks
+        document.addEventListener('mousedown', clickOutsideDropdown);
+
+        return () => {
+            // stop listening for clicks
+            document.removeEventListener('mousedown', clickOutsideDropdown);
+        };
+    }, [])
 
     return (
         <>
@@ -99,14 +169,17 @@ export function TransWidget() {
                         <p className=''>Date</p>
                     </button>
 
+                    {/* Filter Inputs */}
                     <button className={`flex flex-row bg-white h-auto ml-3 mr-3 mt-1 mb-1 ${!FilterOpen && 'hidden'} rounded w-[98%] font-bold shadow`}>
                         <input value={FilterID} onChange={(evN) => setFilterID(evN.target.value)} className='w-[55px] text-left h-[24px] border border-gray-300' placeholder="ID #" />
-                        <input value={FilterName} className='w-[150px] text-left h-[24px] border border-gray-300' placeholder="Name" />
-                        <div className={`flex flex-col`}>
-                            <button  className='w-[140px] text-left h-[24px] border border-gray-300 text-gray-500'  onClick={toggleCategoryDropDown}>Category</button>
+                        <input value={FilterName} onChange={(e) => setFilterName(e.target.value)} className='w-[150px] text-left h-[24px] border border-gray-300' placeholder="Name"/>
 
-                            <div ref={categoryDropdownRef} className={`absolute top-full mt-2 w-52 bg-white z-50 divide-y divide-gray-100 rounded-lg shadow-md ${categoryDropDownToggle ? 'opacity-100 scale-100' : 'opacity-0 scale-95 hidden'} transition-all duration-300`}>
-                                <ul className={`py-2 text-sm items-center ${FilterAction === 'deposit' ? 'hidden' : ''} text-center text-gray-700`}>
+                        {/* Category dropdown */}
+                        <div className={`relative flex flex-col`}>
+                            <button  className='w-[140px] text-left h-[24px] pl-3 border border-gray-300 text-gray-500'  onClick={toggleCategoryDropDown}>{FilterCategory.charAt(0).toUpperCase() + FilterCategory.slice(1)}</button>
+
+                            <div ref={categoryDropdownRef} className={`absolute left-[-40px] top-full mt-2 w-52 bg-white z-50 divide-y divide-gray-100 rounded-lg shadow-md transition-all duration-300 ${categoryDropDownToggle ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
+                            <ul className={`py-2 text-sm items-center text-center text-gray-700`}>
                                     <li>
                                         <button onClick={(e) => filterCategorySelect('entertainment')} className={`inline-block w-full py-2 hover:bg-gray-100`}>Entertainment</button>
                                     </li>
@@ -120,15 +193,20 @@ export function TransWidget() {
                                         <button onClick={(e) => filterCategorySelect('bills')} className="inline-block w-full py-2 hover:bg-gray-100">Bills</button>
                                     </li>
                                     <li>
+                                        <button onClick={(e) => filterCategorySelect('work')}  className="inline-block w-full py-2 hover:bg-gray-100">Work</button>
+                                    </li>
+                                    <li>
                                         <button onClick={(e) => filterCategorySelect('other')}  className="inline-block w-full py-2 hover:bg-gray-100">Other</button>
                                     </li>
                                 </ul>
                             </div>
                         </div>
-                        <div className={`flex flex-col`}>
-                            <input value={FilterAction} className='w-[100px] text-left h-[24px] border border-gray-300' placeholder="Action" />
 
-                            <div ref={actionDropdownRef} className={`absolute top-full mt-2 w-52 bg-white z-50 divide-y divide-gray-100 rounded-lg shadow-md ${actionDropDownToggle ? 'opacity-100 scale-100' : 'opacity-0 scale-95 hidden'} transition-all duration-300`}>
+                        {/* Action dropdown */}
+                        <div className={`relative flex flex-col`}>
+                            <button className='w-[100px] text-gray-500 pl-3 text-left h-[24px] border border-gray-300' onClick={toggleActionDropDown}>{FilterAction.charAt(0).toUpperCase() + FilterAction.slice(1)}</button>
+
+                            <div ref={actionDropdownRef} className={`absolute left-[-50px] top-full mt-2 w-52 bg-white z-50 divide-y divide-gray-100 rounded-lg shadow-md transition-all duration-300 ${actionDropDownToggle ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
                                 <ul className="py-2 text-sm items-center text-center text-gray-700">
                                     <li>
                                         <button onClick={(e) => actionSelect('deposit')} className="inline-block w-full py-2 hover:bg-gray-100">Deposit</button>
@@ -140,13 +218,13 @@ export function TransWidget() {
                             </div>
                         </div>
 
-                        <input value={FilterAmount} className='w-[100px] text-left h-[24px] border border-gray-300' placeholder="Amount" />
-                        <input value={FilterDate} className='h-[24px] w-[175px] border border-gray-300' placeholder="Date" />
+                        <input value={FilterAmount} type={'number'} className='w-[100px] appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-left h-[24px] border border-gray-300' onChange={(evN) => setFilterAmount(evN.target.value)} placeholder="Amount" />
+                        <input value={FilterDate} className='h-[24px] w-[175px] border border-gray-300' type={'date'} onChange={(evN) => setFilterDate(evN.target.value)} placeholder="Date" />
                     </button>
 
                     <div className='w-[98%]'>
-                        <button className={`${!FilterOpen && 'hidden'} text-gray-700 active:bg-gray-300 bg-white border border-black float-right rounded-xl h-8 w-3/12 right-0 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200 flex items-center justify-center shadow-md`}>
-                            Submit Filter
+                        <button onClick={clearFilter} className={`${!FilterOpen && 'hidden'} text-gray-700 active:bg-gray-300 bg-white border border-black float-right rounded-xl h-8 w-3/12 right-0 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200 flex items-center justify-center shadow-md`}>
+                            Clear Filters
                         </button>
                     </div>
 
@@ -154,7 +232,7 @@ export function TransWidget() {
 
                     {/* Transactions Rows */}
                     <ul>
-                        {[...(transactions ?? [])].reverse().map((transaction) => (
+                        {[...(filteredTransactions ?? [])].reverse().map((transaction) => (
                             <li key={transaction.id} className='last:mb-3'>
                                 <button type='button'
                                         className={`flex flex-row ${colorSwitch(transaction.id)} text-black h-6 ml-3 mr-3 w-[98%] mt-2 rounded font-bold shadow`}
@@ -177,7 +255,7 @@ export function TransWidget() {
             <div className='flex flex-col h-[95%] w-[30%] mt-5 ml-2 items-center justify-center'>
                 <div className='flex flex-col bg-gray-100 mb-5 overflow-x-hidden shadow-md overflow-y-hidden rounded-xl h-[31%] w-full p-4'>
                     <h1 className='text-black font-bold w-full text-center'>Transaction Details</h1>
-                    <p className='w-full text-left'>Transaction Id: #{TransId}</p>
+                    <p className='w-full text-left'>Transaction ID: #{TransId}</p>
                     <p className='w-full text-left'>Name of Transaction: {TransName.charAt(0).toUpperCase() + TransName.slice(1)}</p>
                     <p className='w-full text-left'>Category: {TransCategory.charAt(0).toUpperCase() + TransCategory.slice(1)}</p>
                     <p className='w-full text-left'>Action: {TransAction.charAt(0).toUpperCase() + TransAction.slice(1)}</p>
