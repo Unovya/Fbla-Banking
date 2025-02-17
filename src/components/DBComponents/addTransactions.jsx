@@ -180,7 +180,7 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                         value={inputName}
                         onChange={(evN) => setInputName(evN.target.value)}
                         placeholder="Name of Transaction"
-                        className="text-gray-700 border-black rounded-xl  h-11"
+                        className="text-gray-700 border-black rounded-xl  h-11 text-center"
                     />
 
                     {/* Action Input */}
@@ -249,7 +249,7 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                         value={inputBal}
                         onChange={(evN) => setInputBal(evN.target.value)}
                         placeholder="Transaction Amount"
-                        className="text-gray-700  rounded-xl shadow-md border-black h-11"
+                        className="text-gray-700  rounded-xl shadow-md border-black h-11 text-center"
                     />
 
                 </div>
