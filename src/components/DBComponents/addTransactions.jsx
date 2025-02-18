@@ -1,7 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {db} from "../../scripts/database-Stuff/db";
+import {useLiveQuery} from "dexie-react-hooks";
 
 const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
+    const transactions = useLiveQuery(() => db.transactionLog.toArray(), [], []);
 
     const [balance, setBal] = useState(defaultBal); // Current balance
     const [inputBal, setInputBal] = useState(""); // Input value for adding (string so we don't get an error with the input)
@@ -95,7 +97,7 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
             }
         }
         grabBalance();
-    }, [defaultBal]);
+    }, [defaultBal, transactions]);
 
     async function updateBal() {
         try {
@@ -141,14 +143,28 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
             }
 
             let utcDate = new Date();
+
+            const latestTransaction = await db.transactionLog.orderBy('id').last();
+
+            let nextID = 1; // Default if no transactions exist
+            if (latestTransaction && typeof latestTransaction.id === "number") {
+                nextID = latestTransaction.id + 1; // Set next ID correctly
+                console.log('changed')
+            }
+
+            console.log("Next Transaction ID:", nextID);
+
             await db.transactionLog.add({
+                id: nextID,
                 name: inputName,
                 action: inputAction,
                 amount: intInput.toFixed(2),
                 category: inputCategory,
-                date: new Date(utcDate.getTime() - utcDate.getTimezoneOffset() * 60000).toISOString().split('T')[0], // gets the correct timezone from utc then turns it into "yyyy-mm-dd" Format
+                date: new Date().toISOString().split('T')[0], // "YYYY-MM-DD" format
                 time: new Date().toLocaleTimeString(),
             });
+
+            console.log("Transaction added successfully!");
 
             // Reset the input fields
             setBal(newBalance);
