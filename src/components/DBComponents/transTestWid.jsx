@@ -25,8 +25,9 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
     const [TransDate, setTransDate] = React.useState('');
     const [TransId, setTransId] = React.useState('');
     const [TransAmount, setTransAmount] = React.useState(0);
-    const [deleteID, setDeleteID] = React.useState('')
-    const [balance, setBal] = React.useState(defaultBal)
+    const [deleteID, setDeleteID] = React.useState('');
+    const [balance, setBal] = React.useState(defaultBal);
+    const [DeleteConfirmation, setDeleteConfirmation] = useState(false); // New state for confirmation
 
 
 
@@ -78,6 +79,23 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
         setFilterErrorStatus('')
     }
 
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+      
+        
+        const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      
+        
+        const weekday = weekdays[date.getDay()];
+        const month = months[date.getMonth()];
+        const day = date.getDate();
+        const year = date.getFullYear();
+      
+        
+        return `${weekday} ${month} ${day} ${year}`;
+      }
+      
 
     // Filter all current transactions
     const [filteredTransactions, setFilteredTransactions] = useState(transactions);
@@ -122,6 +140,12 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
     async function deleteTransactions() {
         if (deleteID > 0) {
             const transToDelete = await db.transactionLog.get(parseFloat(deleteID));
+            if (!DeleteConfirmation) {
+                setDeleteConfirmation(true); // Ask for confirmation
+                return;
+            } else {
+                setDeleteConfirmation(false)
+            }
 
             if (transToDelete) {
                 const transactionAmount = parseFloat(transToDelete.amount);
@@ -346,7 +370,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
                                     <p className='w-[140px] text-left'>{transaction.category.charAt(0).toUpperCase() + transaction.category.slice(1)}</p>
                                     <p className='w-[100px] text-left'>{transaction.action.charAt(0).toUpperCase() + transaction.action.slice(1)}</p>
                                     <p className='w-[100px] text-left'>{transaction.action === 'withdraw' && `-$${shorten(transaction.amount, 6)}`} {transaction.action === 'deposit' && `+$${shorten(transaction.amount, 6)}`}</p>
-                                    <p className='text-left'>{transaction.date}</p>
+                                    <p className='text-left'>{formatDate(transaction.date)}</p>
                                 </button>
                             </li>
                         ))}
@@ -366,6 +390,21 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
                     <button onClick={deleteTransactions} className="text-gray-700  bg-white mr-20 border border-black ml-auto rounded-xl h-11 w-5/12 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200 flex items-center justify-center shadow-md">
                         Delete Transaction
                     </button>
+                    
+                    {/* Confirmation for deletion */}
+                    {DeleteConfirmation && (
+                        <div className="absolute bg-gray-800 opacity-100 inset-0 z-50 flex justify-center items-center">
+                            <div className="bg-white p-4 rounded shadow-lg">
+                                <p>Are you sure you want to delete transaction #{deleteID}?</p>
+                                <div className="flex mt-2">
+                                    <button className="mr-2 text-red-500" onClick={() => {setDeleteConfirmation(false); }}>Cancel</button>
+                                    <button className="ml-64 text-blue-500" onClick={deleteTransactions}>Confirm</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+
                 </div>
             </div>
 
@@ -378,8 +417,9 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
                     <p className='w-full text-left'>Category: {TransCategory.charAt(0).toUpperCase() + TransCategory.slice(1)}</p>
                     <p className='w-full text-left'>Action: {TransAction.charAt(0).toUpperCase() + TransAction.slice(1)}</p>
                     <p className='w-full text-left'>Amount: {TransAction === 'withdraw' && "-"}{TransAction === 'deposit' && "+"}${TransAmount}</p>
-                    <p className='w-full text-left'>Date of Transaction: {TransDate.charAt(0).toUpperCase() + TransDate.slice(1)}</p>
-            </div>
+                    <p className='w-full text-left'>Date of Transaction: {TransDate !== '' && formatDate(TransDate)}</p>
+
+                </div>
 
                 {/* Add Transactions */}
                 <AddTransactions />
