@@ -79,7 +79,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
     }
 
 
-
+    // Filter all current transactions
     const [filteredTransactions, setFilteredTransactions] = useState(transactions);
 
     useEffect(() => {
@@ -106,6 +106,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
         setFilteredTransactions(filtered);
     }, [transactions, FilterID, FilterName, FilterCategory, FilterAction, FilterAmount, FilterDate]);
 
+    // Empty filter fields and clear the current filter
     function clearFilter(){
         setFilteredTransactions(transactions)
 
@@ -117,6 +118,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
         setFilterDate('')
     }
 
+    //Delete transactions
     async function deleteTransactions() {
         if (deleteID > 0) {
             const transToDelete = await db.transactionLog.get(parseFloat(deleteID));
@@ -136,7 +138,13 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
                         const existingBal = await db.currentBal.toCollection().first();
                         if (existingBal) {
                             await db.currentBal.update(existingBal.id, { balance: formattedBalance });
-                            db.transactionLog.delete(parseFloat(deleteID));
+                            await db.transactionLog.delete(parseFloat(deleteID));
+                            const checkDeleted = await db.transactionLog.get(parseFloat(deleteID));
+                            if (!checkDeleted){
+                                console.log(`${deleteID} was deleted`)
+                            } else {
+                                console.error(`Failed to delete ${deleteID}`)
+                            }
                         } else {
                             await db.currentBal.add({ balance: formattedBalance });
                         }
@@ -153,34 +161,49 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
     }
 
 
+    // Sorting transactions if some are deleted / some other reason they wouldn't be in order
     useEffect(() => {
-        let previousID = null
+        const sortTransactions = async () => {
+            let previousID = null;
 
-        if (transactions) {
-            transactions?.forEach(transaction => {
-                console.log(transaction.id)
-                if (previousID !== null){
-                    const currentID = transaction.id
-                    const difference = currentID - previousID
-                    console.log(`Current ID: ${currentID}, Previous ID: ${previousID}, Difference: ${difference}`);
+            if (transactions?.length) {
+                for (let i = 0; i < transactions.length; i++) {
+                    const transaction = transactions[i];
+                    const currentID = transaction.id;
 
-                    if (difference > 1){
-                        transactions?.forEach(transaction => {
-                            if (transaction.id >= currentID){
-                                transaction.id = transaction.id - (difference-1)
-                                console.log('changed')
+                    if (previousID !== null) {
+                        const difference = currentID - previousID;
+
+                        if (difference > 1) {
+                            for (let o = 0; o < transactions.length; o++) {
+                                if (transactions[o].id >= currentID) {
+                                    const newID = transactions[o].id - (difference - 1);
+                                    await db.transactionLog.update(transactions[o].id, { id: newID }); // update the db
+
+                                    transactions[o].id = newID; // Update the list
+                                    console.log(`Sorted: Changed ${transactions[o].id} → ${newID}`);
+                                }
                             }
-                        });
+                        }
+                    } else if (currentID !== 1) {
+                        const firstDifference = currentID - 1;
+                        const newID = transaction.id - firstDifference;
+                        await db.transactionLog.update(transaction.id, { id: newID }); // update the db
+                        transaction.id = newID; // Update the list
                     }
-                } else{
-                    console.log('prev is null')
+
+                    previousID = transaction.id;
                 }
-                previousID = transaction.id
-            });
-            console.log(previousID)
-        }
+            }
+        };
+
+        sortTransactions();
+
     }, [transactions]);
 
+
+
+    // Used to remove reverse balance made from deleting transactions
     useEffect(() => {
         async function grabBalance() {
             try {
@@ -197,6 +220,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
         grabBalance();
     }, [defaultBal]);
 
+    //close dropdowns when clicked outside
     useEffect(() => {
         const clickOutsideDropdown = (e) => {
             if (categoryDropdownRef.current && !categoryDropdownRef.current.contains(e.target)) {
@@ -204,11 +228,11 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
             }
 
         };
-        // listen for clicks
+
         document.addEventListener('mousedown', clickOutsideDropdown);
 
         return () => {
-            // stop listening for clicks
+
             document.removeEventListener('mousedown', clickOutsideDropdown);
         };
     }, [])
@@ -220,14 +244,17 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
             }
 
         };
-        // listen for clicks
+
         document.addEventListener('mousedown', clickOutsideDropdown);
 
         return () => {
-            // stop listening for clicks
+
             document.removeEventListener('mousedown', clickOutsideDropdown);
         };
     }, [])
+
+
+
 
     return (
         <>
@@ -326,7 +353,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
                     </ul>
 
                 </div>
-
+                {/* Delete input */}
                 <div className={' flex flex-row '}>
                     <input type={'number'}
                            value={deleteID}
@@ -335,7 +362,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
                            className={'text-gray-700 appearance-none ml-24  text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none rounded-lg shadow-md border-black h-11'}
                     />
 
-
+                    {/* Delete Button */}
                     <button onClick={deleteTransactions} className="text-gray-700  bg-white mr-20 border border-black ml-auto rounded-xl h-11 w-5/12 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200 flex items-center justify-center shadow-md">
                         Delete Transaction
                     </button>
