@@ -160,7 +160,7 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                 action: inputAction,
                 amount: intInput.toFixed(2),
                 category: inputCategory,
-                date: new Date().toISOString().split('T')[0], // "YYYY-MM-DD" format
+                date: new Date().toLocaleDateString('en-US'), // "YYYY-MM-DD" format
                 time: new Date().toLocaleTimeString(),
             });
 
