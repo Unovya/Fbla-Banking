@@ -15,7 +15,7 @@ function shorten(num, maxLength) {
 }
 
 
-export function TransWidget() {
+export function TransWidget({defaultBal} = {defaultBal: 0}) {
 
     const transactions = useLiveQuery(() => db.transactionLog.toArray(), [], []);
 
@@ -25,8 +25,8 @@ export function TransWidget() {
     const [TransDate, setTransDate] = React.useState('');
     const [TransId, setTransId] = React.useState('');
     const [TransAmount, setTransAmount] = React.useState(0);
-    const [FilterOpen, setFilterOpen] = React.useState(false);
-
+    const [deleteID, setDeleteID] = React.useState('')
+    const [balance, setBal] = React.useState(defaultBal)
 
 
 
@@ -52,6 +52,7 @@ export function TransWidget() {
     const [actionDropDownToggle, setActionDropDownToggle] = useState(false);
     const categoryDropdownRef = useRef(null);
     const actionDropdownRef = useRef(null);
+    const [FilterOpen, setFilterOpen] = React.useState(false);
 
 
     function filterControls(){
@@ -116,7 +117,85 @@ export function TransWidget() {
         setFilterDate('')
     }
 
+    async function deleteTransactions() {
+        if (deleteID > 0) {
+            const transToDelete = await db.transactionLog.get(parseFloat(deleteID));
 
+            if (transToDelete) {
+                const transactionAmount = parseFloat(transToDelete.amount);
+                const intBal = parseFloat(balance);
+
+                if (!isNaN(transactionAmount) && !isNaN(intBal)) {
+                    const newBalance = transToDelete.action === "deposit"
+                        ? intBal - transactionAmount
+                        : intBal + transactionAmount;
+
+                    if (!isNaN(newBalance)) { // Ensure newBalance is a number
+                        const formattedBalance = newBalance.toFixed(2); // Convert to 2 decimal places
+
+                        const existingBal = await db.currentBal.toCollection().first();
+                        if (existingBal) {
+                            await db.currentBal.update(existingBal.id, { balance: formattedBalance });
+                            db.transactionLog.delete(parseFloat(deleteID));
+                        } else {
+                            await db.currentBal.add({ balance: formattedBalance });
+                        }
+                    } else {
+                        console.error("Calculated newBalance isn't a number");
+                    }
+                } else {
+                    console.error("Invalid balance or transaction amount");
+                }
+            }
+
+            setDeleteID('')
+        }
+    }
+
+
+    useEffect(() => {
+        let previousID = null
+
+        if (transactions) {
+            transactions?.forEach(transaction => {
+                console.log(transaction.id)
+                if (previousID !== null){
+                    const currentID = transaction.id
+                    const difference = currentID - previousID
+                    console.log(`Current ID: ${currentID}, Previous ID: ${previousID}, Difference: ${difference}`);
+
+                    if (difference > 1){
+                        transactions?.forEach(transaction => {
+                            if (transaction.id >= currentID){
+                                transaction.id = transaction.id - (difference-1)
+                                console.log('changed')
+                            }
+                        });
+                    }
+                } else{
+                    console.log('prev is null')
+                }
+                previousID = transaction.id
+            });
+            console.log(previousID)
+        }
+    }, [transactions]);
+
+    useEffect(() => {
+        async function grabBalance() {
+            try {
+                const existingBal = await db.currentBal.toCollection().first();
+                if (existingBal) {
+                    setBal(parseFloat(existingBal.balance) || 0); // Ensure balance is a number
+                } else {
+                    setBal(defaultBal); // Set to default if no balance exists
+                }
+            } catch (error) {
+                console.log("Error grabbing balance:", error);
+            }
+        }
+        grabBalance();
+    }, [defaultBal]);
 
     useEffect(() => {
         const clickOutsideDropdown = (e) => {
@@ -152,13 +231,11 @@ export function TransWidget() {
 
     return (
         <>
-            {/* Blurring div and gray area */}
-
             <div
-                className={`flex flex-row ml-3 mt-5 mb-5 mr-1 bg-gray-100 overflow-x-hidden overflow-y-auto drop-shadow rounded-xl h-[95%] w-[67%]}`}>
+                className={`flex flex-col ml-3 mt-5 mb-5 mr-1 bg-gray-100 overflow-x-hidden overflow-y-auto drop-shadow rounded-xl h-[95%] w-[67%]}`}>
                 {/* Scroll Area */}
                 <div
-                    className='flex flex-col m-5 bg-gray-100 overflow-x-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 rounded-xl h-[90%] w-[95%]'>
+                    className='flex flex-col m-5 bg-gray-100 overflow-x-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 rounded-xl h-[80%] w-[95%]'>
                     {/* Top row */}
                     <button onClick={filterControls} className='flex flex-row bg-white h-6 ml-3 mr-3 mt-3 mb-1 rounded w-[98%] font-bold shadow'>
                         <p className='ml-3 w-[55px] text-left'>ID #</p>
@@ -248,6 +325,20 @@ export function TransWidget() {
                         ))}
                     </ul>
 
+                </div>
+
+                <div className={' flex flex-row '}>
+                    <input type={'number'}
+                           value={deleteID}
+                           onChange={((evN) =>setDeleteID(evN.target.value))}
+                           placeholder={'ID #'}
+                           className={'text-gray-700 appearance-none ml-24  text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none rounded-lg shadow-md border-black h-11'}
+                    />
+
+
+                    <button onClick={deleteTransactions} className="text-gray-700  bg-white mr-20 border border-black ml-auto rounded-xl h-11 w-5/12 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200 flex items-center justify-center shadow-md">
+                        Delete Transaction
+                    </button>
                 </div>
             </div>
 
