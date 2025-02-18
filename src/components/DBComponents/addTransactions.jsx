@@ -142,14 +142,14 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                 await db.currentBal.add({ balance: newBalance });
             }
 
-            let utcDate = new Date();
+
 
             const latestTransaction = await db.transactionLog.orderBy('id').last();
 
-            let nextID = 1; // Default if no transactions exist
+            let nextID = 1;
             if (latestTransaction && typeof latestTransaction.id === "number") {
-                nextID = latestTransaction.id + 1; // Set next ID correctly
-                console.log('changed')
+                nextID = latestTransaction.id + 1;
+                console.log(`Latest id before current addition of ${nextID}, is ${latestTransaction.id}`)
             }
 
             console.log("Next Transaction ID:", nextID);
@@ -163,8 +163,6 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                 date: new Date().toISOString().split('T')[0], // "YYYY-MM-DD" format
                 time: new Date().toLocaleTimeString(),
             });
-
-            console.log("Transaction added successfully!");
 
             // Reset the input fields
             setBal(newBalance);
