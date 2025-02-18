@@ -179,7 +179,7 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
     return (
         <>
             <div
-                className='flex flex-col shadow-md bg-gray-100 overflow-x-hidden h-[70%] overflow-y-hidden rounded-xl  items-center'>
+                className='flex flex-col shadow-md bg-gray-100 overflow-x-hidden h-[70%] w-[100%] overflow-y-hidden rounded-xl  items-center'>
                 <h1 className={`mt-3 mx-3 text-red-700 ${transErrorStatus === '' && 'hidden'}  font-extrabold w-fit`}>{transErrorStatus}</h1>
 
                 <h1 className='mt-3 mx-3 text-black font-bold w-fit'>Add Transaction</h1>
