@@ -44,11 +44,11 @@ export default function HomePage() {
                 {/*Charts Container*/}
                 <div className='w-full h-[800px] flex'>
                     <div className=' items-center flex flex-row space-x-32 justify-between w-full mt-10 pr-20 mr-9'>
-                        <div className='w-[550px] float-left h-[400px]'>
+                        <div className='w-[600px] h-[500px]'>
                             <IncomeLine />
                         </div>
 
-                        <div className='w-[400px] float-right  mb-44 h-[400px]'>
+                        <div className='w-[400px]  mb-44 h-[400px]'>
                             <OutPie/>
                         </div>
                     </div>
