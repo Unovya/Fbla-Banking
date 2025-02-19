@@ -159,8 +159,8 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
             const offset = localDate.getTimezoneOffset(); // Offset in minutes
             const adjustedDate = new Date(localDate.getTime() - offset * 60000);
             const year = adjustedDate.getFullYear();
-            const month = String(adjustedDate.getMonth() + 1).padStart(2, '0'); // Ensure 2-digit month
-            const day = String(adjustedDate.getDate()).padStart(2, '0'); // Ensure 2-digit day
+            const month = String(adjustedDate.getMonth() + 1).padStart(2, '0'); // Make sure its "02" Format
+            const day = String(adjustedDate.getDate()).padStart(2, '0'); // Make sure its "02" Format
             const dateF = `${year}-${month}-${day}`
 
             console.log(dateF)
