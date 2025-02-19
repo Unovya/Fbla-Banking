@@ -80,7 +80,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
     }
 
     function formatDate(dateString) {
-        const date = new Date(dateString);
+        const date = new Date(dateString + "T00:00:00");
       
         
         const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -91,8 +91,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
         const month = months[date.getMonth()];
         const day = date.getDate();
         const year = date.getFullYear();
-      
-        
+
         return `${weekday} ${month} ${day} ${year}`;
       }
       
