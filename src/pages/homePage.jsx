@@ -5,6 +5,7 @@ import { BalWidget } from "../components/DBComponents/balWidget.jsx";
 import { GrMoney } from "react-icons/gr";
 import {DashCard} from "../components/DashCard.jsx";
 import {OutPie} from "../components/graphs/outPie.jsx";
+import {IncomeLine} from "../components/graphs/incomeLine.jsx";
 
 
 export default function HomePage() {
@@ -41,9 +42,13 @@ export default function HomePage() {
                 {/* End */}
 
                 {/*Charts Container*/}
-                <div className='w-full h-[500px] flex'>
-                    <div className='ml-auto items-center justify-center mt-10 pr-20'>
-                        <div className='w-[400px] h-[400px]'>
+                <div className='w-full h-[800px] flex'>
+                    <div className=' items-center flex flex-row space-x-32 justify-between w-full mt-10 pr-20 mr-9'>
+                        <div className='w-[550px] float-left h-[400px]'>
+                            <IncomeLine />
+                        </div>
+
+                        <div className='w-[400px] float-right  mb-44 h-[400px]'>
                             <OutPie/>
                         </div>
                     </div>
