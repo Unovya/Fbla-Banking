@@ -154,13 +154,23 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
 
             console.log("Next Transaction ID:", nextID);
 
+
+            const localDate = new Date();
+            const offset = localDate.getTimezoneOffset(); // Offset in minutes
+            const adjustedDate = new Date(localDate.getTime() - offset * 60000);
+            const year = adjustedDate.getFullYear();
+            const month = String(adjustedDate.getMonth() + 1).padStart(2, '0'); // Ensure 2-digit month
+            const day = String(adjustedDate.getDate()).padStart(2, '0'); // Ensure 2-digit day
+            const dateF = `${year}-${month}-${day}`
+
+            console.log(dateF)
             await db.transactionLog.add({
                 id: nextID,
                 name: inputName,
                 action: inputAction,
                 amount: intInput.toFixed(2),
                 category: inputCategory,
-                date: new Date().toLocaleDateString('en-US'), // "YYYY-MM-DD" format
+                date: `${year}-${month}-${day}`, // YYYY-MM-DD format in local timezone
                 time: new Date().toLocaleTimeString(),
             });
 
