@@ -368,7 +368,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
                                     <p className='w-[150px] text-left'>{shorten(transaction.name.charAt(0).toUpperCase() + transaction.name.slice(1), 15)}</p>
                                     <p className='w-[140px] text-left'>{transaction.category?.charAt(0).toUpperCase() + transaction.category?.slice(1)}</p>
                                     <p className='w-[100px] text-left'>{transaction.action.charAt(0).toUpperCase() + transaction.action.slice(1)}</p>
-                                    <p className='w-[100px] text-left'>{transaction.action === 'withdraw' && `-$${shorten(transaction.amount, 6)}`} {transaction.action === 'deposit' && `+$${shorten(transaction.amount, 6)}`}</p>
+                                    <p className={`w-[100px] ${transaction.action === 'withdraw' ? 'text-red-700' : 'text-green-700'} text-left`}>{transaction.action === 'withdraw' && `-$${shorten(transaction.amount, 6)}`} {transaction.action === 'deposit' && `+$${shorten(transaction.amount, 6)}`}</p>
                                     <p className='text-left'>{formatDate(transaction.date)}</p>
                                 </button>
                             </li>
