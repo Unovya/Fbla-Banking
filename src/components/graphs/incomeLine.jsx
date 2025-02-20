@@ -100,7 +100,7 @@ export const IncomeLine = () => {
                         let key;
 
                         if (filter === 'week') {
-                            key = weekLabels[transactionDate.getDay()];
+                            key = weekLabels[transactionDate.getDay()+1];
                         } else if (filter === 'month') {
                             key = String(transactionDate.getDate()+1); // Use day of month for month filter
                         } else if (filter === 'year') {
@@ -128,7 +128,7 @@ export const IncomeLine = () => {
                         let key;
 
                         if (filter === 'week') {
-                            key = weekLabels[transactionDate.getDay()];
+                            key = weekLabels[transactionDate.getDay()+1];
                         } else if (filter === 'month') {
                             key = String(transactionDate.getDate()+1); // Use day of month for month filter
                         } else if (filter === 'year') {
