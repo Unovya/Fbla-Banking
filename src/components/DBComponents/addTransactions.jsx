@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {db} from "../../scripts/database-Stuff/db";
+import {db} from "../../scripts/database-scripts/db";
 import {useLiveQuery} from "dexie-react-hooks";
 
 const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {

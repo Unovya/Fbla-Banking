@@ -1,5 +1,5 @@
 
-import {db} from "../../scripts/database-Stuff/db.js";
+import {db} from "../../scripts/database-scripts/db.js";
 import React, {useEffect} from "react";
 
 export function MonthlyIncome() {

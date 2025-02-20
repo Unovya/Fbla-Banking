@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../scripts/database-Stuff/db.js";
+import { db } from "../scripts/database-scripts/db.js";
 import { HiOutlinePaperClip } from "react-icons/hi2";
 
 const generateCSV = (event, data) => {

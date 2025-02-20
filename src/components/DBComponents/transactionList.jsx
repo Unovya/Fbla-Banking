@@ -1,4 +1,4 @@
-import {db} from "../../scripts/database-Stuff/db.js";
+import {db} from "../../scripts/database-scripts/db.js";
 import React, {useEffect, useRef, useState} from "react";
 import AddTransactions from "./addTransactions.jsx";
 import {useLiveQuery} from "dexie-react-hooks";

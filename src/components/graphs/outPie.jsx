@@ -1,7 +1,7 @@
 import {Doughnut} from 'react-chartjs-2'
 import {ArcElement, Chart as ChartJS, Legend, Tooltip} from "chart.js";
 import React, {useEffect, useState} from 'react'
-import {db} from "../../scripts/database-Stuff/db.js";
+import {db} from "../../scripts/database-scripts/db.js";
 
 
 ChartJS.register(Tooltip, Legend, ArcElement);

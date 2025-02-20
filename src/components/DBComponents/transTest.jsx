@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { db } from "../../scripts/database-Stuff/db.js";
+import { db } from "../../scripts/database-scripts/db.js";
 import React from "react";
 
 export function TransTest({ defaultBal } = { defaultBal: 0 }) {

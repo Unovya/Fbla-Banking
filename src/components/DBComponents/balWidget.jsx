@@ -1,5 +1,5 @@
 import {useLiveQuery} from "dexie-react-hooks";
-import {db} from "../../scripts/database-Stuff/db.js";
+import {db} from "../../scripts/database-scripts/db.js";
 import React from "react";
 
 export function BalWidget() {

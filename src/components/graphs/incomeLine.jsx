@@ -1,8 +1,7 @@
 import { Doughnut, Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import React, { useEffect, useState } from 'react';
-import { db } from "../../scripts/database-Stuff/db.js";
-import faker from 'faker';
+import { db } from "../../scripts/database-scripts/db.js";
 
 export const IncomeLine = () => {
 
