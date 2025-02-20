@@ -49,6 +49,7 @@
     "dexie-react-hooks": "^1.1.7",
     "electron-squirrel-startup": "^1.0.1",
     "faker": "^5.5.3",
+    "framer-motion": "^12.4.5",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
