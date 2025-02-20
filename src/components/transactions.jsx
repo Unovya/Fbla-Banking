@@ -1,5 +1,5 @@
 import React from 'react';
-import {TransWidget} from "./DBComponents/transTestWid.jsx";
+import {TransWidget} from "./DBComponents/transactionList.jsx";
 
 
 const Transactions = () => {

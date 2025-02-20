@@ -2,7 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 import SideNavbar from "../components/sideNavbar.jsx";
 import {TransTest} from "../components/DBComponents/transTest.jsx";
-import {TransWidget} from "../components/DBComponents/transTestWid.jsx";
+import {TransWidget} from "../components/DBComponents/transactionList.jsx";
 
 export default function Xmple2() {
     return (

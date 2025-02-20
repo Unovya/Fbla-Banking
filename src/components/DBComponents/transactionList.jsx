@@ -8,8 +8,8 @@ function colorSwitch(num) {
     else return "bg-white hover:bg-gray-100";
 }
 function shorten(num, maxLength) {
-    if (num.length > maxLength) {
-        return num.slice(0, maxLength) + '...';
+    if (num?.length > maxLength) {
+        return num?.slice(0, maxLength) + '...';
     }
     return num;
 }
@@ -365,8 +365,8 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
                                         className={`flex flex-row ${colorSwitch(transaction.id)} text-black h-6 ml-3 mr-3 w-[98%] mt-2 rounded font-bold shadow`}
                                         onClick={() => setupDetails(transaction.name, transaction.action, transaction.category, transaction.amount, transaction.date, transaction.id)}>
                                     <p className='ml-3 w-[55px] text-left'>{transaction.id}</p>
-                                    <p className='w-[150px] text-left'>{transaction.name.charAt(0).toUpperCase() + transaction.name.slice(1)}</p>
-                                    <p className='w-[140px] text-left'>{transaction.category.charAt(0).toUpperCase() + transaction.category.slice(1)}</p>
+                                    <p className='w-[150px] text-left'>{shorten(transaction.name.charAt(0).toUpperCase() + transaction.name.slice(1), 15)}</p>
+                                    <p className='w-[140px] text-left'>{transaction.category?.charAt(0).toUpperCase() + transaction.category?.slice(1)}</p>
                                     <p className='w-[100px] text-left'>{transaction.action.charAt(0).toUpperCase() + transaction.action.slice(1)}</p>
                                     <p className='w-[100px] text-left'>{transaction.action === 'withdraw' && `-$${shorten(transaction.amount, 6)}`} {transaction.action === 'deposit' && `+$${shorten(transaction.amount, 6)}`}</p>
                                     <p className='text-left'>{formatDate(transaction.date)}</p>
@@ -413,7 +413,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
                     <h1 className='text-black font-bold w-full text-center'>Transaction Details</h1>
                     <p className='w-full text-left'>Transaction ID: #{TransId}</p>
                     <p className='w-full text-left'>Name of Transaction: {TransName.charAt(0).toUpperCase() + TransName.slice(1)}</p>
-                    <p className='w-full text-left'>Category: {TransCategory.charAt(0).toUpperCase() + TransCategory.slice(1)}</p>
+                    <p className='w-full text-left'>Category: {TransCategory?.charAt(0).toUpperCase() + TransCategory?.slice(1)}</p>
                     <p className='w-full text-left'>Action: {TransAction.charAt(0).toUpperCase() + TransAction.slice(1)}</p>
                     <p className='w-full text-left'>Amount: {TransAction === 'withdraw' && "-"}{TransAction === 'deposit' && "+"}${TransAmount}</p>
                     <p className='w-full text-left'>Date of Transaction: {TransDate !== '' && formatDate(TransDate)}</p>

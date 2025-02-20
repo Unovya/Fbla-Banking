@@ -8,6 +8,8 @@ import {OutPie} from "../components/graphs/outPie.jsx";
 import {IncomeLine} from "../components/graphs/incomeLine.jsx";
 import CSVDownloader from "../components/generateCSV.jsx";
 import HelpButton from "../components/helpButton.jsx";
+import {MonthlyExpenses} from "../components/DBComponents/monthlyExpenses.jsx";
+import {MonthlyIncome} from "../components/DBComponents/monthlyIncome.jsx";
 
 
 export default function HomePage() {
@@ -28,16 +30,16 @@ export default function HomePage() {
                 <div className="flex flex-wrap justify-start grid-cols-4 space-x-5 gap-5">
                     {/* Top Cards */}
                     <div className="w-fit">
-                        <DashCard title="Balance" content=<BalWidget/> borderColor="border-green-600" icon=<GrMoney className='text-3xl float-right'/>/>
+                        <DashCard title="Balance" content=<BalWidget/> borderColor="border-green-600" icon=<GrMoney className='text-3xl '/>/>
                     </div>
                     <div className="w-fit">
-                        <DashCard title="PlaceHolder 1" content="PlaceHolder 1" borderColor="border-violet-600" icon=<GrMoney className='text-3xl float-right'/>/>
+                        <DashCard title="Expenses This Month" content=<MonthlyExpenses/> borderColor="border-red-600" icon=<GrMoney className='text-3xl '/>/>
                     </div>
                     <div className="w-fit">
-                        <DashCard title="PlaceHolder 2" content="PlaceHolder 2" borderColor="border-red-600" icon=<GrMoney className='text-3xl float-right'/>/>
+                        <DashCard title="Income This Month" content=<MonthlyIncome /> borderColor="border-violet-600" icon=<GrMoney className='text-3xl '/>/>
                     </div>
                     <div className="w-fit">
-                        <DashCard title="PlaceHolder 3" content="PlaceHolder 3" borderColor="border-blue-600" icon=<GrMoney className='text-3xl float-right'/>/>
+                        <DashCard title="PlaceHolder 3" content="PlaceHolder 3" borderColor="border-blue-600" icon=<GrMoney className='text-3xl '/>/>
                     </div>
                 </div>
                 {/* End */}
