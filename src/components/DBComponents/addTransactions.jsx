@@ -15,6 +15,7 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
     const [transErrorStatus, setTransErrorStatus] = useState('')
     const categoryDropdownRef = useRef(null);
     const actionDropdownRef = useRef(null);
+    const [inputDate, setInputDate] = useState(''); // Date of transaction
 
     const toggleCategoryDropDown = () =>{
         if (inputAction !== 'deposit' && inputAction !== 'withdraw'){
@@ -143,34 +144,32 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
             }
 
 
-
             const latestTransaction = await db.transactionLog.orderBy('id').last();
 
             let nextID = 1;
             if (latestTransaction && typeof latestTransaction.id === "number") {
                 nextID = latestTransaction.id + 1;
-                console.log(`Latest id before current addition of ${nextID}, is ${latestTransaction.id}`)
+                console.log(`Latest id before current addition of ${nextID}, is ${latestTransaction.id}`);
             }
 
             console.log("Next Transaction ID:", nextID);
 
+            const localDate = inputDate ? new Date(`${inputDate}T00:00:00`) : new Date();
+            localDate.setMinutes(localDate.getMinutes() + localDate.getTimezoneOffset()); // Offset correction
+            const year = localDate.getFullYear();
+            const month = String(localDate.getMonth() + 1).padStart(2, '0'); // Ensure "02" format
+            const day = String(localDate.getDate()).padStart(2, '0'); // Ensure "02" format
+            const dateF = `${year}-${month}-${day}`;
 
-            const localDate = new Date();
-            const offset = localDate.getTimezoneOffset(); // Offset in minutes
-            const adjustedDate = new Date(localDate.getTime() - offset * 60000);
-            const year = adjustedDate.getFullYear();
-            const month = String(adjustedDate.getMonth() + 1).padStart(2, '0'); // Make sure its "02" Format
-            const day = String(adjustedDate.getDate()).padStart(2, '0'); // Make sure its "02" Format
-            const dateF = `${year}-${month}-${day}`
+            console.log(dateF);
 
-            console.log(dateF)
             await db.transactionLog.add({
                 id: nextID,
                 name: inputName,
                 action: inputAction,
                 amount: intInput.toFixed(2),
                 category: inputCategory,
-                date: `${year}-${month}-${day}`, // YYYY-MM-DD format in local timezone
+                date: dateF,
                 time: new Date().toLocaleTimeString(),
             });
 
@@ -180,6 +179,7 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
             setInputName("");
             setInputAction("Choose an Action");
             setInputCategory("Choose a Category");
+            setInputDate('')
         } catch (error) {
             console.log("Error updating balance:", error);
         }
@@ -268,14 +268,26 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                         </div>
                     </div>
 
-                    {/* Amount input */}
-                    <input
-                        type="number"
-                        value={inputBal}
-                        onChange={(evN) => setInputBal(evN.target.value)}
-                        placeholder="Transaction Amount"
-                        className="text-gray-700 appearance-none text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none rounded-xl shadow-md border-black h-11"
-                    />
+                    <div className="relative flex flex-col justify-center items-center text-center">
+                        {/* Amount input */}
+                        <input
+                            type="number"
+                            value={inputBal}
+                            onChange={(evN) => setInputBal(evN.target.value)}
+                            placeholder="Transaction Amount"
+                            className="text-gray-700 appearance-none text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none rounded-xl shadow-md border-black h-11"
+                        />
+
+                        <input
+                            type="date"
+                            value={inputDate}
+                            onChange={(evN) => setInputDate(evN.target.value)}
+                            className="text-gray-700 border-black rounded-xl h-11 text-center mt-3"
+                        />
+                    </div>
+
+
+
 
                 </div>
 
