@@ -27,7 +27,7 @@ export default function HomePage() {
                 {/* End */}
 
                 {/* Top Cards container */}
-                <div className="flex flex-wrap justify-start grid-cols-4 space-x-5 gap-5">
+                <div className="flex flex-wrap justify-start space-x-5 gap-5">
                     {/* Top Cards */}
                     <div className="w-fit">
                         <DashCard title="Balance" content=<BalWidget/> borderColor="border-green-600" icon=<GrMoney className='text-3xl '/>/>
@@ -37,9 +37,6 @@ export default function HomePage() {
                     </div>
                     <div className="w-fit">
                         <DashCard title="Income This Month" content=<MonthlyIncome /> borderColor="border-violet-600" icon=<GrMoney className='text-3xl '/>/>
-                    </div>
-                    <div className="w-fit">
-                        <DashCard title="PlaceHolder 3" content="PlaceHolder 3" borderColor="border-blue-600" icon=<GrMoney className='text-3xl '/>/>
                     </div>
                 </div>
                 {/* End */}
