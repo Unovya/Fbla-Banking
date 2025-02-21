@@ -4,6 +4,7 @@ export const db = new Dexie('UnovianDB');
 db.version(1).stores({
     currentBal: '++id, balance',
     transactionLog: 'id, name, action, amount, category, date, time',
+    currentBudget: '++id, amount',
     reoccurringCosts: '++id, name, amount, date'
 });
 
