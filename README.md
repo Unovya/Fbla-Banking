@@ -3,7 +3,7 @@
 # 💸 SpendWise - The Money Management App for Students! 💸
 
 ---
-Are you a student who struggles to manage your money? Do you find yourself spending too much on things you don't need? If so, then SpendWise is the app for you! SpendWise is a money management app designed specifically for students. It allows you to track your spending, visualize it, and save money. With SpendWise, you can take control of your finances and make smarter decisions about how you spend your money. So why wait? Download SpendWise today and start managing your money like a pro!
+Are you a student who struggles to manage your money? Do you find yourself spending too much on things you don't need? If so, then SpendWise is the app for you! SpendWise is a money management app designed specifically for students. It allows you to track your spending, visualize it, set budgets, and save money. With SpendWise, you can take control of your finances and make smarter decisions about how you spend your money. So why wait? Download SpendWise today and start managing your money like a pro!
 
 <img src="./src/public/images/FemtanylLogo.jpg" alt="Femtanyl Logo" title="Femtanyl Logo" style="margin-left: auto; margin-right: auto; display: block; max-width: 100%;">
 
@@ -69,6 +69,7 @@ existing entries and offer search and filter options to easily find specific tra
 - **Visualize Your Spending** - See your spending in a graph to better understand your spending habits.
 - **Filter Transactions** - Filter transactions by date, category, or amount to find specific transactions.
 - **Generate a CSV File** - Export your transactions to a CSV file for easy sharing and backup.
+- **Set Budgets** - Set monthly budgets to help you stay on track.
 
 ## 📰 Sources
 ***
