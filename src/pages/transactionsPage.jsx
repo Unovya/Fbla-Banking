@@ -34,7 +34,7 @@ export default function TransactionsPage() {
             <OnboardingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} data={"Welcome To Your Transactions! Here you can add, delete, and view your transactions! " +
                 "If you want to filter your Transactions all you have to do is press where it says 'ID # Name ...' Right above your transactions and then enter your filters! " +
                 "You can also delete any transactions right below the transactions table. If you wish to see a transaction in better detail, " +
-                "then you can click it and It'll popup in your 'Transaction Details'! " +
+                "then you can click it and It'll popup in your 'Transaction Details'! You can also set a budget so you dont have to go through the struggle of remembering one yourself! All you have to do is press 'Manage Budget' " +
                 "If you ever want to see me again, You can find me at the top Right in the '?' Button"} />
 
             <div className="w-screen ml-[2.5rem] pt-[1.9rem]">
