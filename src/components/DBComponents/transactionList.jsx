@@ -2,6 +2,7 @@ import {db} from "../../scripts/database-scripts/db.js";
 import React, {useEffect, useRef, useState} from "react";
 import AddTransactions from "./addTransactions.jsx";
 import {useLiveQuery} from "dexie-react-hooks";
+import {motion} from "framer-motion";
 
 function colorSwitch(num) {
     if (num % 2 === 0) return "bg-gray-200 hover:bg-gray-300";
@@ -28,9 +29,55 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
     const [deleteID, setDeleteID] = React.useState('');
     const [balance, setBal] = React.useState(defaultBal);
     const [DeleteConfirmation, setDeleteConfirmation] = useState(false); // New state for confirmation
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
 
+    function TwoButtonModal({ isOpen, onClose, onConfirm, text1, text2, leftButton, rightButton }) {
+        if (!isOpen) return null;
 
+        return (
+            <div className="fixed inset-0 flex items-center justify-center z-50">
+                {/* Background Overlay */}
+                <div
+                    className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+                    onClick={onClose}
+                ></div>
+
+                {/* Modal Content */}
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="relative bg-white rounded-2xl shadow-lg p-6 w-[550px] border border-t-[25px] border-violet-800"
+                >
+                    {/* Modal Body */}
+                    <div className="mt-4 text-black">
+                        <h2 className="font-semibold text-xl">{text1}</h2>
+                        <p className="mt-2 text-sm">{text2}</p>
+                    </div>
+
+                    {/* Modal Actions */}
+                    <div className="mt-4 flex justify-between">
+                        <button
+                            className="bg-gray-300 text-black py-2 px-4 rounded-lg"
+                            onClick={onClose}
+                        >
+                            {leftButton}
+                        </button>
+                        <button
+                            className="bg-red-500 text-white py-2 px-4 rounded-lg"
+                            onClick={onConfirm}
+                        >
+                            {rightButton}
+                        </button>
+                    </div>
+                </motion.div>
+            </div>
+        );
+    }
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
 
     function setupDetails(name, action, category, amount, date, id) {
         setTransId(id);
@@ -139,12 +186,6 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
     async function deleteTransactions() {
         if (deleteID > 0) {
             const transToDelete = await db.transactionLog.get(parseFloat(deleteID));
-            if (!DeleteConfirmation) {
-                setDeleteConfirmation(true); // Ask for confirmation
-                return;
-            } else {
-                setDeleteConfirmation(false)
-            }
 
             if (transToDelete) {
                 const transactionAmount = parseFloat(transToDelete.amount);
@@ -179,6 +220,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
                 }
             }
 
+            closeModal();
             setDeleteID('')
         }
     }
@@ -386,22 +428,20 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
                     />
 
                     {/* Delete Button */}
-                    <button onClick={deleteTransactions} className="text-gray-700  bg-white mr-20 border border-black ml-auto rounded-xl h-11 w-5/12 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200 flex items-center justify-center shadow-md">
+                    <button onClick={openModal} className="text-gray-700  bg-white mr-20 border border-black ml-auto rounded-xl h-11 w-5/12 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200 flex items-center justify-center shadow-md">
                         Delete Transaction
                     </button>
 
-                    {/* Confirmation for deletion */}
-                    {DeleteConfirmation && (
-                        <div className="absolute bg-gray-800 opacity-100 inset-0 z-50 flex justify-center items-center">
-                            <div className="bg-white p-4 rounded shadow-lg">
-                                <p>Are you sure you want to delete transaction #{deleteID}?</p>
-                                <div className="flex mt-2">
-                                    <button className="mr-2 text-red-500" onClick={() => {setDeleteConfirmation(false); }}>Cancel</button>
-                                    <button className="ml-64 text-blue-500" onClick={deleteTransactions}>Confirm</button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                    <TwoButtonModal
+                        isOpen={isModalOpen}
+                        onClose={closeModal}
+                        onConfirm={deleteTransactions}
+                        text1={`Are you sure you want to delete Transaction ID: #${deleteID}?`}
+                        text2={`This action can not be undone!`}
+                        leftButton="Cancel"
+                        rightButton="Delete"
+                    />
+
 
 
                 </div>
