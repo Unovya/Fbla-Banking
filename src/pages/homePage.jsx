@@ -49,7 +49,7 @@ export default function HomePage() {
 
             <div className="w-full ml-12 pt-[1.9rem]">
                 {/* Dashboard and report Gen container */}
-                <div className="text-black text-3xl font-normal flex mb-4 items-center justify-between">
+                <div className="text-black text-3xl font-normal w-[calc(100%-170px)] flex mb-4 items-center justify-between">
                     <h3 className="flex">Dashboard</h3>
 
                     <div className="flex items-center gap-5">
@@ -77,7 +77,7 @@ export default function HomePage() {
                 {/* End */}
 
                 {/*Charts Container*/}
-                <div className='w-full h-[800px] flex'>
+                <div className='w-[calc(100%-150px)] h-[800px] flex'>
                     <div className=' items-center flex flex-row space-x-32 justify-between w-full mt-10 pr-20 mr-9'>
                         <div className='w-[600px] h-[500px]'>
                             <IncomeLine />
