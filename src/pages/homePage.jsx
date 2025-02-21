@@ -8,7 +8,7 @@ import {OutPie} from "../components/graphs/outPie.jsx";
 import {IncomeLine} from "../components/graphs/incomeLine.jsx";
 import CSVDownloader from "../components/generateCSV.jsx";
 import {MonthlyExpenses} from "../components/DBComponents/monthlyExpenses.jsx";
-import {MonthlyIncome} from "../components/DBComponents/monthlyIncome.jsx";
+import {BudgetWidget} from "../components/DBComponents/budgetWidget.jsx";
 import OnboardingModal from "../components/onboardingModal.jsx";
 
 
@@ -71,7 +71,7 @@ export default function HomePage() {
                         <DashCard title="Expenses This Month" content=<MonthlyExpenses/> borderColor="border-red-600" icon=<GrMoney className='text-3xl '/>/>
                     </div>
                     <div className="w-fit">
-                        <DashCard title="Income This Month" content=<MonthlyIncome /> borderColor="border-violet-600" icon=<GrMoney className='text-3xl '/>/>
+                        <DashCard title="Monthly Budget" content=<BudgetWidget /> borderColor="border-violet-600" icon=<GrMoney className='text-3xl '/>/>
                     </div>
                 </div>
                 {/* End */}
