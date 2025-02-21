@@ -133,15 +133,15 @@ export const OutPie = () => {
     const options = {};
 
     return (
-        <div className={`flex flex-col relative justify-between`}>
+        <div className={`flex flex-col  relative pl-10 justify-between`}>
             <div className={``}>
                 <Doughnut options={options} data={data} />
             </div>
             <h3 className="text-center text-xl font-semibold mt-4 mb-1">Filter By?</h3>
             <div className="flex space-x-4 mt-5 absolute top-[100%] left-[18%] mb-4">
-                <button onClick={() => setFilter('week')} className={`px-4 py-2 ${filter === 'week' ? 'bg-violet-800 text-white ' : 'bg-white'} text-gray-700  border border-black rounded-xl h-11 w-11/12 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-violet-500 hover:text-white transition duration-200 flex items-center justify-center shadow-md`}>Week</button>
-                <button onClick={() => setFilter('month')} className={`px-4 py-2 ${filter === 'month' ? 'bg-violet-800 text-white ' : 'bg-white'} text-gray-700  border border-black rounded-xl h-11 w-11/12 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-violet-500 hover:text-white transition duration-200 flex items-center justify-center shadow-md`}>Month</button>
-                <button onClick={() => setFilter('year')} className={`px-4 py-2 ${filter === 'year' ? 'bg-violet-800 text-white ' : 'bg-white'} text-gray-700  border border-black rounded-xl h-11 w-11/12 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-violet-500 hover:text-white transition duration-200 flex items-center justify-center shadow-md`}>Year</button>
+                <button onClick={() => setFilter('week')} className={`px-4 py-2 ${filter === 'week' ? 'bg-violet-800 text-white ' : 'bg-white'} text-gray-700  border border-black rounded-xl h-11 w-fit px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-violet-500 hover:text-white transition duration-200 flex items-center justify-center shadow-md`}>This Week</button>
+                <button onClick={() => setFilter('month')} className={`px-4 py-2 ${filter === 'month' ? 'bg-violet-800 text-white ' : 'bg-white'} text-gray-700  border border-black rounded-xl h-11 w-fit px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-violet-500 hover:text-white transition duration-200 flex items-center justify-center shadow-md`}>This Month</button>
+                <button onClick={() => setFilter('year')} className={`px-4 py-2 ${filter === 'year' ? 'bg-violet-800 text-white ' : 'bg-white'} text-gray-700  border border-black rounded-xl h-11 w-fit px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-violet-500 hover:text-white transition duration-200 flex items-center justify-center shadow-md`}>This Year</button>
             </div>
         </div>
     );
