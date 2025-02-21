@@ -21,8 +21,12 @@ export default function HomePage() {
                 {/* Dashboard and report Gen container */}
                 <div className="text-black text-3xl font-normal flex mb-4 items-center justify-between">
                     <h3 className="flex">Dashboard</h3>
-                    <HelpButton content={'Test'}  />
-                    <CSVDownloader />
+
+                    <div className="flex items-center gap-64">
+                        <HelpButton content={"Welcome To the Dashboard! Here you can see your Balance, How much you have spent, and how much you've made! If you click The 'Generate Report' Button You can download a CSV File of all your transactions!" +
+                            ''} />
+                        <CSVDownloader />
+                    </div>
                 </div>
                 {/* End */}
 
