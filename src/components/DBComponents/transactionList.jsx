@@ -81,20 +81,20 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
 
     function formatDate(dateString) {
         const date = new Date(dateString + "T00:00:00");
-      
-        
+
+
         const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      
-        
+
+
         const weekday = weekdays[date.getDay()];
         const month = months[date.getMonth()];
         const day = date.getDate();
         const year = date.getFullYear();
 
         return `${weekday} ${month} ${day} ${year}`;
-      }
-      
+    }
+
 
     // Filter all current transactions
     const [filteredTransactions, setFilteredTransactions] = useState(transactions);
@@ -306,7 +306,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
                             <button  className='w-[140px] text-left h-[24px] pl-3 border border-gray-300 text-gray-500'  onClick={toggleCategoryDropDown}>{FilterCategory.charAt(0).toUpperCase() + FilterCategory.slice(1)}</button>
 
                             <div ref={categoryDropdownRef} className={`absolute left-[-40px] top-full mt-2 w-52 bg-white z-50 divide-y divide-gray-100 rounded-lg shadow-md transition-all duration-300 ${categoryDropDownToggle ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
-                            <ul className={`py-2 text-sm items-center text-center text-gray-700`}>
+                                <ul className={`py-2 text-sm items-center text-center text-gray-700`}>
                                     <li>
                                         <button onClick={(e) => filterCategorySelect('entertainment')} className={`inline-block w-full py-2 hover:bg-gray-100`}>Entertainment</button>
                                     </li>
@@ -389,7 +389,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
                     <button onClick={deleteTransactions} className="text-gray-700  bg-white mr-20 border border-black ml-auto rounded-xl h-11 w-5/12 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200 flex items-center justify-center shadow-md">
                         Delete Transaction
                     </button>
-                    
+
                     {/* Confirmation for deletion */}
                     {DeleteConfirmation && (
                         <div className="absolute bg-gray-800 opacity-100 inset-0 z-50 flex justify-center items-center">
@@ -408,7 +408,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
             </div>
 
             {/*details*/}
-            <div className='flex flex-col h-[95%] w-[30%] mt-5 ml-2 items-center justify-center'>
+            <div className='flex flex-col h-[95%] w-[33%] mt-5 ml-2 items-center justify-center'>
                 <div className='flex flex-col bg-gray-100 mb-5 overflow-x-hidden shadow-md overflow-y-hidden rounded-xl h-[31%] w-full p-4'>
                     <h1 className='text-black font-bold w-full text-center'>Transaction Details</h1>
                     <p className='w-full text-left'>Transaction ID: #{TransId}</p>
