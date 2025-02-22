@@ -327,7 +327,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
                 className={`flex flex-col ml-3 mt-5 mb-5 mr-1 bg-gray-100 overflow-x-hidden overflow-y-auto drop-shadow rounded-xl h-[95%] w-[67%]}`}>
                 {/* Scroll Area */}
                 <div
-                    className='flex flex-col m-5 bg-gray-100 overflow-x-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 rounded-xl h-[80%] w-[95%]'>
+                    className='flex flex-col m-5 bg-gray-100 overflow-x-hidden overflow-y-hidden  rounded-xl h-[80%] w-[95%]'>
                     {/* Top row */}
                     <button onClick={filterControls} className='flex flex-row bg-white h-6 ml-3 mr-3 mt-3 mb-1 rounded w-[98%] font-bold shadow'>
                         <p className='ml-3 w-[55px] text-left'>ID #</p>
@@ -337,6 +337,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
                         <p className='w-[100px] text-left'> Amount</p>
                         <p className=''>Date</p>
                     </button>
+
 
                     {/* Filter Inputs */}
                     <button className={`flex flex-row bg-white h-auto ml-3 mr-3 mt-1 mb-1 ${!FilterOpen && 'hidden'} rounded w-[98%] font-bold shadow`}>
@@ -399,23 +400,27 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
 
 
 
+                    <div className={`[&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full overflow-y-auto`} >
+                        <ul>
+                            {[...(filteredTransactions ?? [])].reverse().map((transaction) => (
+                                <li key={transaction.id} className='last:mb-3'>
+                                    <button type='button'
+                                            className={`flex flex-row ${colorSwitch(transaction.id)} text-black h-6 ml-3 mr-3 w-[98%] mt-2 rounded font-bold shadow`}
+                                            onClick={() => setupDetails(transaction.name, transaction.action, transaction.category, transaction.amount, transaction.date, transaction.id)}>
+                                        <p className='ml-3 w-[55px] text-left'>{transaction.id}</p>
+                                        <p className='w-[150px] text-left'>{shorten(transaction.name.charAt(0).toUpperCase() + transaction.name.slice(1), 15)}</p>
+                                        <p className='w-[140px] text-left'>{transaction.category?.charAt(0).toUpperCase() + transaction.category?.slice(1)}</p>
+                                        <p className='w-[100px] text-left'>{transaction.action.charAt(0).toUpperCase() + transaction.action.slice(1)}</p>
+                                        <p className={`w-[100px] ${transaction.action === 'withdraw' ? 'text-red-700' : 'text-green-700'} text-left`}>{transaction.action === 'withdraw' && `-$${shorten(transaction.amount, 6)}`} {transaction.action === 'deposit' && `+$${shorten(transaction.amount, 6)}`}</p>
+                                        <p className='text-left'>{formatDate(transaction.date)}</p>
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
                     {/* Transactions Rows */}
-                    <ul>
-                        {[...(filteredTransactions ?? [])].reverse().map((transaction) => (
-                            <li key={transaction.id} className='last:mb-3'>
-                                <button type='button'
-                                        className={`flex flex-row ${colorSwitch(transaction.id)} text-black h-6 ml-3 mr-3 w-[98%] mt-2 rounded font-bold shadow`}
-                                        onClick={() => setupDetails(transaction.name, transaction.action, transaction.category, transaction.amount, transaction.date, transaction.id)}>
-                                    <p className='ml-3 w-[55px] text-left'>{transaction.id}</p>
-                                    <p className='w-[150px] text-left'>{shorten(transaction.name.charAt(0).toUpperCase() + transaction.name.slice(1), 15)}</p>
-                                    <p className='w-[140px] text-left'>{transaction.category?.charAt(0).toUpperCase() + transaction.category?.slice(1)}</p>
-                                    <p className='w-[100px] text-left'>{transaction.action.charAt(0).toUpperCase() + transaction.action.slice(1)}</p>
-                                    <p className={`w-[100px] ${transaction.action === 'withdraw' ? 'text-red-700' : 'text-green-700'} text-left`}>{transaction.action === 'withdraw' && `-$${shorten(transaction.amount, 6)}`} {transaction.action === 'deposit' && `+$${shorten(transaction.amount, 6)}`}</p>
-                                    <p className='text-left'>{formatDate(transaction.date)}</p>
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
+
 
                 </div>
                 {/* Delete input */}
