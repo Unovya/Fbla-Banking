@@ -34,7 +34,20 @@ export default function HomePage() {
         }
     }, [isDashboardFirstRun]);
 
+    const modalHeadings = [
+        'Welcome to the Dashboard',
+        'Track Your Expenses',
+        'Visualize Your information',
+        'If you have any questions!'
+    ];
 
+    const modalData = [
+        'Hello! Welcome to the dashboard. Here you can track your expenses, check your budget, and view your financial data in a clean and organized way.',
+        'At the top of the dashboard, you can see your balance, expenses for the month, and your monthly budget. You can also download your financial data as a CSV file.',
+        'Below the top cards, you can see two charts. The first chart shows your income over time, and the second chart shows your expenses in a pie chart. You can hover over the charts to see more information, and even click the legend to hide certain data.',
+        'If you ever need a refresher, you can click the "?" button at the top right of the screen to view this onboarding modal again. Enjoy using the dashboard!'
+
+    ]
 
 
 
@@ -43,9 +56,7 @@ export default function HomePage() {
             <SideNavbar />
             {/* Main Container */}
 
-            <OnboardingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} data={"Welcome To the Dashboard! Here you can see your Balance, How much you have spent, and how much you've made!" +
-                " If you click The 'Generate Report' Button at the top right, You can download a CSV File of all your transactions! If you ever need to see this again," +
-                " you can find me also at the top right of your screen at the ? button!"} />
+            <OnboardingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} steps={modalData} headings={modalHeadings} />
 
             <div className="w-full ml-12 pt-[1.9rem]">
                 {/* Dashboard and report Gen container */}

@@ -26,16 +26,33 @@ export default function TransactionsPage() {
         }
     }, [isTransactionsFirstRun]);
 
+    const modalHeadings = [
+        'Welcome To Your Transactions',
+        'Filtering and Deleting Transactions',
+        'Adding New Transactions',
+        'Managing Your Budget',
+        'Editing Transactions',
+        'If you have any questions!'
+    ]
+
+    const modalData = [
+        'Welcome to the transactions page! Here you can view all of your transactions in one place. You can see the id, date, name, amount, type, and category, of each transaction. You can also click on a transaction to view more details about it in the details area.',
+        "In the transactions area, you can filter by pressing the white bar at the top where it says 'ID#    Name    Category....'. You can filter by any of the categories, and you can also delete any transaction by going beneath the transactions area, entering the ID of the transaction you wish to delete, and clicking the 'Delete' button.",
+        "You can also add new transactions! all you have to do is click the 'Add Transaction' button right below the details area! You can add a new transaction by entering the id, date, name, amount, type, and category of the transaction. Optionally, you can leave the date empty to use the today's date.",
+        "Right next to the 'Add Transaction' button, you can see the 'Manage Budget' button. Clicking this button will take you to the budget page where you can manage your budget. You can set a budget, view it, or update it, and we'll let you know if you're at risk of passing it.",
+        "Below the transactions and budgeting area, there's a 'Edit Transactions' button. Clicking this button will take you to the edit transactions page where you can edit any transaction you want. Just enter in the ID then enter the new data. After that, We'll handle the rest!",
+        'If you ever need a refresher, you can click the "?" button at the top right of the screen to view this onboarding modal again. Happy budgeting!'
+    ]
+
+
+
+
     return (
         <div className="flex overflow-x-hidden w-screen h-screen overflow-y-hidden bg-gray-100">
             <SideNavbar />
             {/* Main Container */}
 
-            <OnboardingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} data={"Welcome To Your Transactions! Here you can add, delete, and view your transactions! " +
-                "If you want to filter your Transactions all you have to do is press where it says 'ID # Name ...' Right above your transactions and then enter your filters! " +
-                "You can also delete any transactions right below the transactions table. If you wish to see a transaction in better detail, " +
-                "then you can click it and It'll popup in your 'Transaction Details'! You can also set a budget so you dont have to go through the struggle of remembering one yourself! All you have to do is press 'Manage Budget' " +
-                "If you ever want to see me again, You can find me at the top Right in the '?' Button"} />
+            <OnboardingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} steps={modalData} headings={modalHeadings} />
 
             <div className="w-screen ml-[2.5rem] pt-[1.9rem]">
                 {/* Title container */}
