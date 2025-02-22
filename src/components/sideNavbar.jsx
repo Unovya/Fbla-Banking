@@ -1,5 +1,6 @@
 import React from "react";
 import {BsArrowLeftShort, BsBezier2, BsBoxSeam, BsBracesAsterisk} from "react-icons/bs"
+import { TbAlignBoxLeftStretch } from "react-icons/tb";
 import {RiDashboardFill} from "react-icons/ri";
 import {Link} from "react-router-dom";
 
@@ -11,9 +12,10 @@ const SideNavbar = () => {
     const [open, setOpen] = React.useState(true);
     const Menus = [
         {title: "Dashboard", icon: <RiDashboardFill />, link: "/"},
-        {title: "Transactions", icon: <RiDashboardFill />, link: "/transactionPg"},
-        {title: "Example1", icon: <BsBoxSeam />, link: "/example1", spacing: true},
-        {title: "Example2", icon: <BsBracesAsterisk />, link: "/example2"},
+        {title: "Transactions", icon: <TbAlignBoxLeftStretch />, link: "/transactionPg"},
+
+        // {title: "Example1", icon: <BsBoxSeam />, link: "/example1", spacing: true},
+        // {title: "Example2", icon: <BsBracesAsterisk />, link: "/example2"},
     ]
 
     return (
