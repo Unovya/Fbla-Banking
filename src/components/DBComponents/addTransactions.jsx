@@ -6,7 +6,7 @@ import {motion} from "framer-motion";
 const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
     const transactions = useLiveQuery(() => db.transactionLog.toArray(), [], []);
 
-    const [transOrBudget, setTransOrBudget] = useState('transactions');
+    const [transOrBudgetOrEdit, setTransOrBudgetOrEdit] = useState('transactions');
     const [budget, setBudget] = useState(0);
     const [inputBudget, setInputBudget] = useState('');
     const [budgetStatus, setBudgetStatus] = useState('');
@@ -28,6 +28,8 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
     const [inputDate, setInputDate] = useState(''); // Date of transaction
     const [budgetRerender, setBudgetRerender] = useState(false);
     const [overBudgetModal, setOverBudgetModal] = useState(false);
+    const [inputID, setInputID] = useState('')
+    const [editing, setEditing] = useState(false)
 
     const toggleCategoryDropDown = () =>{
         if (inputAction !== 'deposit' && inputAction !== 'withdraw'){
@@ -292,24 +294,38 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
 
         const haveBudget = await db.currentBudget.toCollection().first();
 
+        console.log('have budget', haveBudget)
+
         if (!haveBudget){
+            console.log('no budget')
             await updateBal();
             return;
+        } else{
+            const intInput = parseFloat(inputBal); // Make input a number
+
+
+            const currentBudget = await db.currentBudget.toCollection().first()
+            if (currentBudget){
+                const intBudget = parseFloat(currentBudget.amount, 2)
+
+                console.log('int budget', intBudget)
+
+                if (inputAction === 'withdraw'){
+
+                    const newSpentThisMonth = spentThisMonth + intInput
+
+                    console.log('newspent', newSpentThisMonth)
+                    if (newSpentThisMonth.toFixed(2)  > intBudget){
+                        setOverBudgetModal(true);
+                    }else{await updateBal();}
+                }else {
+                    await updateBal()
+                }
+            }
+
         }
 
-        const intInput = parseFloat(inputBal); // Make input a number
-        const intBalance = parseFloat(balance); // Current balance
 
-        const newBalance = inputAction === "deposit"
-            ? intBalance + intInput
-            : intBalance - intInput; // Subtract if action is 'withdraw'
-
-
-        if (newBalance.toFixed(2)  > budget && inputAction === 'withdraw'){
-            setOverBudgetModal(true);
-        }else{
-            await updateBal();
-        }
     }
 
     function closeOverBudgetModal() {
@@ -361,6 +377,75 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                 </motion.div>
             </div>
         );
+    }
+
+    async function editTransaction(){
+        if (!editing){
+            setTransOrBudgetOrEdit('edit')
+            setEditing(true);
+        }else{
+
+            const localDate = inputDate ? new Date(`${inputDate}T00:00:00`) : new Date();
+            localDate.setMinutes(localDate.getMinutes() + localDate.getTimezoneOffset()); // Offset correction
+            const year = localDate.getFullYear();
+            const month = String(localDate.getMonth() + 1).padStart(2, '0'); // Ensure "02" format
+            const day = String(localDate.getDate()).padStart(2, '0'); // Ensure "02" format
+            const dateF = `${year}-${month}-${day}`;
+
+            if (inputID === '' || inputName === '' || inputAction === 'Choose an Action' || inputCategory ==='Choose a Category' || inputBal === ''){
+                setTransErrorStatus('*All fields must be completed');
+                console.log('must fill all fields');
+                return;
+            } else {
+                setTransErrorStatus('');
+            }
+
+            const intInput = parseFloat(inputBal); // Make input a number
+            const intBalance = parseFloat(balance); // Current balance
+
+            if (intInput > intBalance && inputAction === 'withdraw'){
+                setTransErrorStatus(`You do not have $${intInput}`);
+                return;
+            }
+
+            const newBalance = inputAction === "deposit"
+                ? intBalance + intInput
+                : intBalance - intInput; // Subtract if action is 'withdraw'
+
+            const existingBal = await db.currentBal.toCollection().first();
+
+            const transactionLogs = await db.transactionLog
+
+            if (transactionLogs){
+                await db.transactionLog.update(parseInt(inputID), {name: inputName, action: inputAction, amount: intInput.toFixed(2), category: inputCategory, date: dateF})
+            }else {console.log('didnt update')}
+
+
+            if (existingBal) {
+                await db.currentBal.update(existingBal.id, { balance: newBalance.toFixed(2) }); // To fixed makes sure Balance is at maximum 2 decimal digits.
+            } else {
+                await db.currentBal.add({ balance: newBalance });
+            }
+
+            setInputID('')
+            setBal(newBalance);
+            setInputBal("");
+            setInputName("");
+            setInputAction("Choose an Action");
+            setInputCategory("Choose a Category");
+            setInputDate('')
+        }
+
+
+    }
+
+    function setTransaction(){
+        setTransOrBudgetOrEdit('transactions')
+        setEditing(false)
+    }
+    function setButtonBudget(){
+        setTransOrBudgetOrEdit('budget')
+        setEditing(false)
     }
 
     // Check how much was spent this month
@@ -448,7 +533,7 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
             }
         }
         grabBudget();
-    }, [budget, spentThisMonth, transactions, transOrBudget, budgetRerender]);
+    }, [budget, spentThisMonth, transactions, transOrBudgetOrEdit, budgetRerender]);
 
 
 
@@ -460,15 +545,15 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
             <div
                 className='flex flex-col shadow-md bg-gray-100 overflow-x-hidden h-[70%] w-[100%] overflow-y-hidden rounded-xl  items-center'>
 
-                { transOrBudget === 'transactions' && <h1 className={`mt-3 mx-3 text-red-700 ${transErrorStatus === '' && 'hidden'}  font-extrabold w-fit`}>{transErrorStatus}</h1>}
-                { transOrBudget === 'budget' && <h1 className={`mt-3 mx-3 text-red-700 ${budgetErrorStatus === '' && 'hidden'}  font-extrabold w-fit`}>{budgetErrorStatus}</h1>}
+                { transOrBudgetOrEdit === 'transactions' || transOrBudgetOrEdit === 'edit' && <h1 className={`mt-3 mx-3 text-red-700 ${transErrorStatus === '' && 'hidden'}  font-extrabold w-fit`}>{transErrorStatus}</h1>}
+                { transOrBudgetOrEdit === 'budget' && <h1 className={`mt-3 mx-3 text-red-700 ${budgetErrorStatus === '' && 'hidden'}  font-extrabold w-fit`}>{budgetErrorStatus}</h1>}
 
                 <div className='grid grid-cols-2 mb-4'>
-                    <button onClick={() =>{setTransOrBudget('transactions')}} className='mt-3 mx-3 text-black bg-white rounded-xl border border-black p-1 font-bold w-fit'>Add Transactions</button>
-                    <button onClick={() =>{setTransOrBudget('budget')}} className='mt-3 mx-3 text-black bg-white rounded-xl border border-black p-1 font-bold w-fit'>Manage Budget</button>
+                    <button onClick={() =>{setTransaction()}} className='mt-3 mx-3 text-black bg-white rounded-xl border border-black p-1 font-bold w-fit'>Add Transactions</button>
+                    <button onClick={() =>{setButtonBudget()}} className='mt-3 mx-3 text-black bg-white rounded-xl border border-black p-1 font-bold w-fit'>Manage Budget</button>
                 </div>
 
-                {transOrBudget === 'transactions' && (
+                {transOrBudgetOrEdit === 'transactions' && (
                     <>
                         {/* input fields */}
                         <motion.div initial={{ opacity: 0, scale: 0.9 }}
@@ -566,7 +651,7 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                             </div>
                         </motion.div>
 
-                        <div className="flex space-x-4 mt-10">
+                        <div className="flex space-x-4 mt-5">
                             <button
                                 onClick={openOverBudgetModal}
                                 className="text-gray-700 bg-white border border-black rounded-xl h-11 w-11/12 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200 flex items-center justify-center shadow-md"
@@ -574,7 +659,7 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                                 Add Transaction
                             </button>
 
-                            <twoButtonModal
+                            <TwoButtonModal
                                 isOpen={overBudgetModal}
                                 onClose={closeOverBudgetModal}
                                 onConfirm={updateBal}
@@ -593,8 +678,7 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                     </>
                 )}
 
-                {transOrBudget === 'budget' && (
-
+                {transOrBudgetOrEdit === 'budget' && (
                     <>
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9 }}
@@ -602,8 +686,8 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                             exit={{ opacity: 0, scale: 0.9 }}
                             className='flex flex-col justify-center items-center text-center space-y-3'
                         >
-                            <div className=" font-medium text-lg">
-                                <label className={` text-black`}>{budgetStatus}</label>
+                            <div className=" ">
+                                <label className={` font-medium text-lg text-black`}>{budgetStatus}</label>
                             </div>
 
 
@@ -651,11 +735,11 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                                         <input type="number" value={inputBudget} onChange={(evN) => setInputBudget(evN.target.value)} placeholder="New Budget Amount" className="text-gray-700 border-black rounded-xl [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none transition duration-500 h-11 text-center mt-3"/>
 
                                         <div className={`grid grid-cols-2 space-x-3`}>
-                                            <button className="text-gray-700 bg-white border border-black rounded-xl h-11 w-52  px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-100 flex items-center justify-center" type="button" onClick={() => manageBudget()}>
+                                            <button className="text-gray-700 bg-white border border-black rounded-xl h-11 w-fit  px-8 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-100 flex items-center justify-center" type="button" onClick={() => manageBudget()}>
                                                 Set Budget
                                             </button>
 
-                                            <button onClick={openModal} className="text-gray-700 bg-white border border-black rounded-xl h-11 w-52  px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-100 flex items-center justify-center">
+                                            <button onClick={openModal} className="text-gray-700 bg-white border border-black rounded-xl h-11 w-fit  px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-100 flex items-center justify-center">
                                                 Delete Budget
                                             </button>
 
@@ -685,9 +769,124 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
 
 
                     </>
-
                 )}
 
+                {transOrBudgetOrEdit === 'edit' && (
+                    <>
+                        <motion.div initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.9 }} className='justify-center items-center text-center space-y-3'>
+
+                            <label className={` font-bold text-lg text-black`}>Edit Transactions</label>
+
+
+                            <div className={`flex flex-col space-y-3`}>
+
+
+                                <input
+                                    type="number"
+                                    value={inputID}
+                                    onChange={(evN) => setInputID(evN.target.value)}
+                                    placeholder="ID of transaction"
+                                    className="text-gray-700 appearance-none text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none rounded-xl shadow-md border-black h-11"
+                                />
+
+                                <input
+                                    type="text"
+                                    value={inputName}
+                                    onChange={(evN) => setInputName(evN.target.value)}
+                                    placeholder="Name of Transaction"
+                                    className="text-gray-700 border-black rounded-xl h-11 text-center"
+                                />
+
+                                {/* Action Input */}
+                                <div className="relative flex flex-col justify-center items-center text-center">
+                                    <button
+                                        className="text-gray-700 bg-white border border-black rounded-xl h-11 w-52 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200 flex items-center justify-center"
+                                        type="button"
+                                        onClick={toggleActionDropDown}>
+                                        {inputAction.charAt(0).toUpperCase() + inputAction.slice(1)}
+                                    </button>
+
+                                    <div ref={actionDropdownRef} className={`absolute top-full mt-2 w-52 bg-white z-50 divide-y divide-gray-100 rounded-lg shadow-md ${actionDropDownToggle ? 'opacity-100 scale-100' : 'opacity-0 scale-95 hidden'} transition-all duration-300`}>
+                                        <ul className="py-2 text-sm items-center text-center text-gray-700">
+                                            <li>
+                                                <button onClick={(e) => actionSelect('deposit')} className="inline-block w-full py-2 hover:bg-gray-100">Deposit</button>
+                                            </li>
+                                            <li>
+                                                <button onClick={(e) => actionSelect('withdraw')} className="inline-block w-full py-2 hover:bg-gray-100">Withdraw</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                {/* Category input */}
+                                <div className="relative flex flex-col justify-center items-center text-center">
+                                    <button
+                                        className="text-gray-700 bg-white border border-black rounded-xl h-11 w-52 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200 flex items-center justify-center"
+                                        type="button"
+                                        onClick={toggleCategoryDropDown}>
+                                        {inputCategory.charAt(0).toUpperCase() + inputCategory.slice(1)}
+                                    </button>
+
+                                    <div ref={categoryDropdownRef} className={`absolute top-full mt-2 w-52 bg-white z-50 divide-y divide-gray-100 rounded-lg shadow-md ${categoryDropDownToggle ? 'opacity-100 scale-100' : 'opacity-0 scale-95 hidden'} transition-all duration-300`}>
+                                        <ul className={`py-2 text-sm items-center ${inputAction === 'deposit' ? 'hidden' : ''} text-center text-gray-700`}>
+                                            <li>
+                                                <button onClick={(e) => categorySelect('entertainment')} className={`inline-block w-full py-2 hover:bg-gray-100`}>Entertainment</button>
+                                            </li>
+                                            <li>
+                                                <button onClick={(e) => categorySelect('food')} className="inline-block w-full py-2 hover:bg-gray-100">Food</button>
+                                            </li>
+                                            <li>
+                                                <button onClick={(e) => categorySelect('shopping')} className="inline-block w-full py-2 hover:bg-gray-100">Shopping</button>
+                                            </li>
+                                            <li>
+                                                <button onClick={(e) => categorySelect('bills')} className="inline-block w-full py-2 hover:bg-gray-100">Bills</button>
+                                            </li>
+                                            <li>
+                                                <button onClick={(e) => categorySelect('other')} className="inline-block w-full py-2 hover:bg-gray-100">Other</button>
+                                            </li>
+                                        </ul>
+
+                                        <ul className={`py-2 text-sm items-center ${inputAction === 'withdraw' ? 'hidden' : ''} text-center text-gray-700`}>
+                                            <li>
+                                                <button onClick={(e) => categorySelect('work')} className={`inline-block w-full py-2 hover:bg-gray-100`}>Work</button>
+                                            </li>
+                                            <li>
+                                                <button onClick={(e) => categorySelect('other')} className="inline-block w-full py-2 hover:bg-gray-100">Other</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div className="relative flex flex-col justify-center items-center text-center">
+                                    {/* Amount input */}
+                                    <input
+                                        type="number"
+                                        value={inputBal}
+                                        onChange={(evN) => setInputBal(evN.target.value)}
+                                        placeholder="Transaction Amount"
+                                        className="text-gray-700 appearance-none text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none rounded-xl shadow-md border-black h-11"
+                                    />
+
+                                    <input
+                                        type="date"
+                                        value={inputDate}
+                                        onChange={(evN) => setInputDate(evN.target.value)}
+                                        className="text-gray-700 border-black rounded-xl h-11 text-center mt-3"
+                                    />
+                                </div>
+
+                            </div>
+                            {/* Name input */}
+
+
+                        </motion.div>
+                    </>
+                )}
+                <div className='grid grid-cols-1'>
+                    <button onClick={() =>{editTransaction()}} className={`${creatingBudget ? 'mt-20' : 'mt-7'} mx-3 text-black  bg-white rounded-xl border border-black p-2 font-bold w-fit`}>{editing ? 'Confirm Edit' : 'Edit Transactions'}</button>
+                </div>
             </div>
         </>
     );
