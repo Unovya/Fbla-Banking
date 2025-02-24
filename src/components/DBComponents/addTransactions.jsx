@@ -545,12 +545,35 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
             <div
                 className='flex flex-col shadow-md bg-gray-100 overflow-x-hidden h-[70%] w-[100%] overflow-y-hidden rounded-xl  items-center'>
 
+
+
                 { transOrBudgetOrEdit === 'transactions' || transOrBudgetOrEdit === 'edit' && <h1 className={`mt-3 mx-3 text-red-700 ${transErrorStatus === '' && 'hidden'}  font-extrabold w-fit`}>{transErrorStatus}</h1>}
                 { transOrBudgetOrEdit === 'budget' && <h1 className={`mt-3 mx-3 text-red-700 ${budgetErrorStatus === '' && 'hidden'}  font-extrabold w-fit`}>{budgetErrorStatus}</h1>}
 
                 <div className='grid grid-cols-2 mb-4'>
-                    <button onClick={() =>{setTransaction()}} className={`mt-3 mx-3 rounded-xl  ${transOrBudgetOrEdit === 'transactions' ? 'bg-gray-600 text-white' : 'bg-white text-black hover:bg-gray-300 hover:text-black'}  border border-black p-1 font-bold w-fit`}>Add Transactions</button>
-                    <button onClick={() =>{setButtonBudget()}} className={`mt-3 mx-3 rounded-xl border ${transOrBudgetOrEdit === 'budget' ? 'bg-gray-600 text-white' : 'bg-white text-black hover:bg-gray-300 hover:text-black'} border-black p-1 font-bold w-fit`}>Manage Budget</button>
+
+                    {transOrBudgetOrEdit == 'transactions' && (
+                        <>
+                            <button onClick={() =>{setButtonBudget()}} className={`mt-3 mx-3 px-4 rounded-xl border ${transOrBudgetOrEdit === 'budget' ? 'bg-gray-600 text-white' : 'bg-white text-black hover:bg-gray-300 hover:text-black'} border-black p-1 font-bold w-fit`}>Manage Budget</button>
+                            <button onClick={() =>{editTransaction()}} className={` mt-3 mx-3 text-black hover:bg-gray-300 bg-white rounded-xl border border-black p-2 font-bold w-fit`}>{editing ? 'Confirm Edit' : 'Edit Transactions'}</button>
+
+                        </>
+                    )}
+
+                    {transOrBudgetOrEdit == 'budget' && (
+                        <>
+                            <button onClick={() =>{setTransaction()}} className={`mt-3 mx-3 rounded-xl  ${transOrBudgetOrEdit === 'transactions' ? 'bg-gray-600 text-white' : 'bg-white text-black hover:bg-gray-300 hover:text-black'}  border border-black p-1 font-bold w-fit`}>Add Transactions</button>
+                            <button onClick={() =>{editTransaction()}} className={` mt-3 mx-3 text-black hover:bg-gray-300 bg-white rounded-xl border border-black p-2 font-bold w-fit`}>{editing ? 'Confirm Edit' : 'Edit Transactions'}</button>
+                        </>
+                    )}
+
+                    {transOrBudgetOrEdit == 'edit' && (
+                        <>
+                            <button onClick={() =>{setTransaction()}} className={`mt-3 mx-3 rounded-xl  ${transOrBudgetOrEdit === 'transactions' ? 'bg-gray-600 text-white' : 'bg-white text-black hover:bg-gray-300 hover:text-black'}  border border-black p-1 font-bold w-fit`}>Add Transactions</button>
+                            <button onClick={() =>{setButtonBudget()}} className={`mt-3 mx-3 px-4 rounded-xl border ${transOrBudgetOrEdit === 'budget' ? 'bg-gray-600 text-white' : 'bg-white text-black hover:bg-gray-300 hover:text-black'} border-black p-1 font-bold w-fit`}>Manage Budget</button>
+                        </>
+                    )}
+                    
                 </div>
 
                 {transOrBudgetOrEdit === 'transactions' && (
@@ -884,9 +907,6 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                         </motion.div>
                     </>
                 )}
-                <div className='grid grid-cols-1'>
-                    <button onClick={() =>{editTransaction()}} className={`${creatingBudget ? 'mt-20' : 'mt-7'} mx-3 text-black hover:bg-gray-300 bg-white rounded-xl border border-black p-2 font-bold w-fit`}>{editing ? 'Confirm Edit' : 'Edit Transactions'}</button>
-                </div>
             </div>
         </>
     );
