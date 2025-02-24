@@ -3,6 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import AddTransactions from "./addTransactions.jsx";
 import {useLiveQuery} from "dexie-react-hooks";
 import {motion} from "framer-motion";
+import { Navigate, useNavigate } from 'react-router-dom';
 
 function colorSwitch(num) {
     if (num % 2 === 0) return "bg-gray-200 hover:bg-gray-300";
@@ -187,8 +188,20 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
         setFilterAmount('')
         setFilterDate('')
     }
+    
+    const navigate = useNavigate();
+    const adminPassword = '0.42829695'
 
-    //Delete transactions
+    // Allows acess to admin panel via a password
+
+    useEffect(() => {
+        if (deleteID === adminPassword) {
+          navigate('/example2');  // Trigger the redirect when deleteID matches
+        }
+      }, [deleteID, navigate]);
+
+
+    // Delete transactions
     async function deleteTransactions() {
         if (deleteID > 0) {
             const transToDelete = await db.transactionLog.get(parseFloat(deleteID));
@@ -459,7 +472,7 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
             </div>
 
             {/*details*/}
-            <div className='flex flex-col h-[95%] w-[33%] mt-5 ml-2 items-center justify-center'>
+            <div className='flex flex-col h-[95%] w-[32.3%] mt-5 ml-2 items-center justify-center'>
                 <div className='flex flex-col bg-gray-100 mb-5 overflow-x-hidden shadow-md overflow-y-hidden rounded-xl h-[31%] w-full p-4'>
                     <h1 className='text-black font-bold w-full text-center'>Transaction Details</h1>
                     <p className='w-full text-left'>Transaction ID: #{TransId}</p>
