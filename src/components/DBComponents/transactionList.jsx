@@ -76,7 +76,13 @@ export function TransWidget({defaultBal} = {defaultBal: 0}) {
         );
     }
 
-    const openModal = () => setIsModalOpen(true);
+    const openModal = () => {
+        if (deleteID === '') {
+            console.error("No ID entered");
+            return;
+        }
+        setIsModalOpen(true);
+    }
     const closeModal = () => setIsModalOpen(false);
 
     function setupDetails(name, action, category, amount, date, id) {
