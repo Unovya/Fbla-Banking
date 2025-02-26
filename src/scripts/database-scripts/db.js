@@ -13,7 +13,18 @@ db.open().catch((error) => {
 });
 
 
+
+if (process.env.NODE_ENV === 'production') {
+    localStorage.removeItem('isFirstRun');
+    Dexie.delete('UnovianDB').then(() => {
+        console.log('Database deleted for production reset');
+    }).catch((error) => {
+        console.error('Error deleting DB:', error);
+    });
+}
+
 const isFirstRun = localStorage.getItem('isFirstRun') === null;
+
 
 if (isFirstRun){
     console.log('First time running app, initializing DB');
@@ -34,3 +45,5 @@ if (isFirstRun){
 }else {
     console.log('App opened before, no initialization needed.');
 }
+
+
