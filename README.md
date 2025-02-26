@@ -75,8 +75,7 @@ existing entries and offer search and filter options to easily find specific tra
 
 | Library       | Purpose                                            |
 |---------------|----------------------------------------------------|
-| NextJS        | Frontend framework used for rendering the frontend | |
-| Electron      | Used to create the desktop app                     |
+| Electron      | Used to create the desktop app                     | |
 | React         | Used to create the frontend                        |
 | Tailwind      | Used for styling the frontend                      |
 | Dexie         | Used for the database / Persistent storage         |
