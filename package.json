@@ -55,5 +55,17 @@
     "react-icons": "^5.4.0",
     "react-router-dom": "^7.0.1"
   },
+  "build": {
+    "appId": "com.example.app",
+    "mac": {
+      "icon": "public/icon.icns"
+    },
+    "win": {
+      "icon": "public/icon.ico"
+    },
+    "linux": {
+      "icon": "public/icon.png"
+    }
+  },
   "homepage": "/"
 }
