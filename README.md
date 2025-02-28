@@ -2,6 +2,11 @@
 
 # 💸 SpendWise - The Money Management App for Students! 💸
 
+<img src="src/public/sc1.png">
+<img src="src/public/sc2.png">
+
+
+
 ---
 Are you a student who struggles to manage your money? Do you find yourself spending too much on things you don't need? If so, then SpendWise is the app for you! SpendWise is a money management app designed specifically for students. It allows you to track your spending, visualize it, set budgets, and save money. With SpendWise, you can take control of your finances and make smarter decisions about how you spend your money. So why wait? Download SpendWise today and start managing your money like a pro!
 
@@ -75,7 +80,8 @@ existing entries and offer search and filter options to easily find specific tra
 
 | Library       | Purpose                                            |
 |---------------|----------------------------------------------------|
-| Electron      | Used to create the desktop app                     | |
+| NextJS        | Frontend framework used for rendering the frontend | |
+| Electron      | Used to create the desktop app                     |
 | React         | Used to create the frontend                        |
 | Tailwind      | Used for styling the frontend                      |
 | Dexie         | Used for the database / Persistent storage         |
