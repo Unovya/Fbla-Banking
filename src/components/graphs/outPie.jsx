@@ -110,14 +110,30 @@ export const OutPie = () => {
         fetchData();
     }, [filter]);
 
+    function amounts(){
+        if (!entertainmentAmount && !foodAmount && !billsAmount && !shoppingAmount && !otherAmount) {
+            return [1]
+        }
+        else {
+            return [entertainmentAmount, foodAmount, billsAmount, shoppingAmount, otherAmount]
+        }
+    }
+
+    function switchLabels(){
+        if (!entertainmentAmount && !foodAmount && !billsAmount && !shoppingAmount && !otherAmount) {
+            return ['No Expenses']
+        } else{
+            return ['Entertainment', 'Food', 'Bills', 'Shopping', 'Other']
+        }
+    }
 
     // Chart data
     const data = {
-        labels: ['Entertainment', 'Food', 'Bills', 'Shopping', 'other'],
+        labels: switchLabels(),
         datasets: [
             {
                 label: 'Money Spent',
-                data: [entertainmentAmount, foodAmount, billsAmount, shoppingAmount, otherAmount],
+                data: amounts(),
                 backgroundColor: [
                     "rgba(255,99,132,0.7)",
                     "rgba(54,162,235,0.7)",
