@@ -9,6 +9,7 @@ if (require('electron-squirrel-startup')) {
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
+    show: false,
     width: 800,
     height: 600,
     icon: join(__dirname, 'public', 'icon.png'),
@@ -18,8 +19,13 @@ const createWindow = () => {
     autoHideMenuBar: false,
   });
 
+
+
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+
+  mainWindow.maximize();
+  mainWindow.show()
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
