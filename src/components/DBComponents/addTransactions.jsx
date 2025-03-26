@@ -322,10 +322,7 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                     await updateBal()
                 }
             }
-
         }
-
-
     }
 
     function closeOverBudgetModal() {
@@ -800,7 +797,9 @@ const AddTransactions = ({ defaultBal } = { defaultBal: 0 }) => {
                                     animate={{ opacity: 1, scale: 1 }}
                                     exit={{ opacity: 0, scale: 0.9 }} className='justify-center items-center text-center space-y-3'>
 
-                            <label className={` font-bold text-lg text-black`}>Edit Transactions</label>
+                            <div className={`flex justify-center`}>
+                                <button className={`text-gray-700 bg-white border border-black rounded-xl h-11 w-34 px-4 focus:outline-none focus:ring-2 focus:ring-black hover:bg-gray-100 transition duration-200 flex items-center justify-center`} onClick={editTransaction}>Confirm Edit</button>
+                            </div>
 
 
                             <div className={`flex flex-col space-y-3`}>
