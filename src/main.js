@@ -16,7 +16,7 @@ const createWindow = () => {
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
-    autoHideMenuBar: false,
+    autoHideMenuBar: true,
   });
 
 
